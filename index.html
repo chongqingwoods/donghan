@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#07090c">
+    <link rel="preload" as="image" href="./assets/start.jpg">
+    <title>穿越东汉末年 · 乱世命格</title>
+    <!-- v1.0 mobile-first cinematic build for /drop/ -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --bg: #07090c;
+            --bg-2: #0b0f14;
+            --panel: rgba(14, 17, 21, 0.96);
+            --panel-soft: rgba(20, 23, 28, 0.88);
+            --gold: #d8b45a;
+            --gold-bright: #f0ce7b;
+            --gold-dim: #8d7134;
+            --crimson: #9f281f;
+            --crimson-bright: #d24131;
+            --text: #efe8d7;
+            --text-soft: #b9b2a7;
+            --text-dim: #746f67;
+            --line: rgba(216, 180, 90, 0.28);
+            --line-strong: rgba(216, 180, 90, 0.5);
+            --shadow: rgba(0, 0, 0, 0.72);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            background: #050608;
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% -10%, rgba(158, 77, 30, 0.22), transparent 32%),
+                radial-gradient(circle at 50% 115%, rgba(111, 27, 20, 0.22), transparent 34%),
+                linear-gradient(180deg, #06080b 0%, #090c10 44%, #050608 100%);
+            color: var(--text);
+            font-family: "Noto Serif SC", "Songti SC", STSong, "PingFang SC", "Microsoft YaHei", serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        .app-shell {
+            width: 100%;
+            max-width: 430px;
+            min-height: 100svh;
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(4, 7, 10, .22), rgba(4, 6, 9, .9)),
+                radial-gradient(circle at 50% 22%, rgba(153, 77, 27, .24), transparent 32%),
+                linear-gradient(180deg, #0a0e12 0%, #090b0e 55%, #050608 100%);
+            box-shadow: 0 0 80px rgba(0,0,0,.9);
+        }
+
+        .app-shell::before,
+        .app-shell::after {
+            content: "";
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .app-shell::before {
+            inset: 0;
+            max-width: 430px;
+            margin: 0 auto;
+            opacity: .27;
+            background-image:
+                linear-gradient(115deg, transparent 0 46%, rgba(255,255,255,.025) 46.2% 46.5%, transparent 46.8%),
+                repeating-linear-gradient(0deg, rgba(255,255,255,.012) 0 1px, transparent 1px 4px);
+            mix-blend-mode: screen;
+        }
+
+        .app-shell::after {
+            left: 50%;
+            bottom: -130px;
+            transform: translateX(-50%);
+            width: 520px;
+            height: 280px;
+            background: radial-gradient(ellipse, rgba(154, 52, 24, .22), transparent 66%);
+            filter: blur(12px);
+        }
+
+        .top-brand {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 24px 18px 10px;
+        }
+
+        .top-brand .brand-line {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--gold-bright);
+            font-weight: 800;
+            font-size: clamp(22px, 7vw, 31px);
+            letter-spacing: .18em;
+            text-shadow: 0 0 20px rgba(216,180,90,.18);
+        }
+
+        .top-brand .brand-line::before,
+        .top-brand .brand-line::after {
+            content: "";
+            width: 34px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim));
+        }
+
+        .top-brand .brand-line::after {
+            transform: scaleX(-1);
+        }
+
+        .top-brand .brand-sub {
+            margin-top: 6px;
+            color: #8f877b;
+            font-size: 11px;
+            letter-spacing: .55em;
+            padding-left: .55em;
+        }
+
+        .view-section {
+            display: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .view-section.active {
+            display: block;
+            animation: fadeRise .35s ease;
+        }
+
+        @keyframes fadeRise {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 开始页：RPG 入世建档 */
+        .start-hero {
+            position: relative;
+            min-height: 330px;
+            margin: 0 12px;
+            border: 1px solid rgba(216,180,90,.24);
+            overflow: hidden;
+            background:
+                linear-gradient(180deg, rgba(8,10,12,.04), rgba(8,10,12,.22) 42%, rgba(5,6,8,.96) 92%),
+                radial-gradient(circle at 50% 39%, rgba(236,168,70,.28), transparent 21%),
+                linear-gradient(140deg, #15171a 0%, #17140f 42%, #080a0d 100%);
+        }
+
+        .start-hero::before {
+            content: "";
+            position: absolute;
+            left: -8%;
+            right: -8%;
+            bottom: 18%;
+            height: 110px;
+            opacity: .82;
+            background:
+                linear-gradient(162deg, transparent 0 9%, #090a0c 9.5% 17%, transparent 17.5% 22%, #090a0c 22.5% 31%, transparent 31.5% 37%, #090a0c 37.5% 47%, transparent 47.5% 56%, #090a0c 56.5% 67%, transparent 67.5% 74%, #090a0c 74.5% 84%, transparent 84.5%),
+                linear-gradient(180deg, transparent 0 58%, #08090b 59% 100%);
+            filter: drop-shadow(0 -10px 20px rgba(0,0,0,.6));
+        }
+
+        .start-hero::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(90deg, rgba(0,0,0,.5), transparent 22%, transparent 78%, rgba(0,0,0,.5)),
+                radial-gradient(circle at 72% 54%, rgba(199,89,31,.18), transparent 18%),
+                radial-gradient(circle at 31% 65%, rgba(176,58,23,.14), transparent 16%);
+        }
+
+        .start-hero-content {
+            position: absolute;
+            z-index: 2;
+            left: 20px;
+            right: 20px;
+            bottom: 24px;
+        }
+
+        .eyebrow {
+            color: var(--gold-dim);
+            font-size: 11px;
+            letter-spacing: .28em;
+            margin-bottom: 8px;
+        }
+
+        .start-title {
+            color: var(--gold-bright);
+            font-size: 43px;
+            line-height: 1;
+            letter-spacing: .08em;
+            font-weight: 900;
+            text-shadow: 0 2px 12px rgba(0,0,0,.8);
+        }
+
+        .start-kicker {
+            color: #c8b47e;
+            margin-top: 10px;
+            font-size: 13px;
+            letter-spacing: .12em;
+        }
+
+        .profile-panel {
+            margin: -2px 12px 0;
+            padding: 18px 18px 20px;
+            position: relative;
+            z-index: 3;
+            background:
+                linear-gradient(rgba(232,220,188,.92), rgba(208,190,151,.9)),
+                repeating-linear-gradient(0deg, rgba(87,59,25,.06) 0 1px, transparent 1px 4px);
+            color: #382817;
+            border: 1px solid #806330;
+            box-shadow: 0 14px 28px rgba(0,0,0,.35);
+        }
+
+        .profile-panel::before,
+        .profile-panel::after {
+            content: "◆";
+            position: absolute;
+            top: 8px;
+            color: rgba(98,67,29,.45);
+            font-size: 9px;
+        }
+
+        .profile-panel::before { left: 9px; }
+        .profile-panel::after { right: 9px; }
+
+        .profile-label {
+            text-align: center;
+            font-weight: 800;
+            font-size: 16px;
+            letter-spacing: .12em;
+            margin-bottom: 12px;
+        }
+
+        .name-wrap {
+            position: relative;
+        }
+
+        #userNameInput {
+            width: 100%;
+            min-height: 54px;
+            border: 1px solid #6b532d;
+            background: rgba(11,13,15,.96);
+            color: var(--gold-bright);
+            outline: none;
+            padding: 0 48px 0 16px;
+            border-radius: 3px;
+            font-size: 16px;
+            letter-spacing: .14em;
+            text-align: left;
+            box-shadow: inset 0 0 18px rgba(0,0,0,.65);
+        }
+
+        #userNameInput:focus {
+            border-color: var(--gold);
+            box-shadow: inset 0 0 18px rgba(0,0,0,.65), 0 0 0 2px rgba(216,180,90,.12);
+        }
+
+        .dice-btn {
+            position: absolute;
+            right: 6px;
+            top: 6px;
+            width: 42px;
+            height: 42px;
+            border: 0;
+            background: transparent;
+            color: #c79b42;
+            font-size: 22px;
+            cursor: pointer;
+        }
+
+        .profile-hint {
+            text-align: center;
+            font-size: 11px;
+            color: #756346;
+            margin-top: 9px;
+        }
+
+        .start-copy {
+            margin: 24px 26px 18px;
+            text-align: center;
+        }
+
+        .start-copy h3 {
+            color: var(--gold-bright);
+            font-size: 19px;
+            letter-spacing: .16em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .start-copy p {
+            color: #c2baae;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            width: calc(100% - 40px);
+            margin: 0 20px;
+            min-height: 58px;
+            border-radius: 4px;
+            cursor: pointer;
+            letter-spacing: .14em;
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        .btn-primary {
+            border: 1px solid #d39b45;
+            color: #f6dfaa;
+            background:
+                linear-gradient(180deg, rgba(159,40,31,.96), rgba(91,18,15,.98));
+            box-shadow:
+                inset 0 0 0 2px rgba(255,215,130,.08),
+                0 8px 22px rgba(83,16,13,.4);
+        }
+
+        .btn-primary:active { transform: translateY(1px); }
+
+        .start-footnote {
+            text-align: center;
+            padding: 15px 24px 28px;
+            color: #746c60;
+            font-size: 10px;
+            letter-spacing: .08em;
+        }
+
+        /* 答题页 */
+        .progress-box {
+            display: none;
+            padding: 4px 18px 14px;
+        }
+
+        .progress-label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            color: var(--text-dim);
+            font-size: 11px;
+            margin-bottom: 11px;
+        }
+
+        #qIndexText {
+            color: var(--gold-bright);
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: .08em;
+        }
+
+        .progress-dots {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+        }
+
+        .progress-dot {
+            position: relative;
+            height: 10px;
+        }
+
+        .progress-dot::before {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            left: 50%;
+            top: 1px;
+            transform: translateX(-50%) rotate(45deg);
+            border: 1px solid #58606a;
+            background: #101317;
+        }
+
+        .progress-dot.done::before {
+            border-color: var(--gold-dim);
+            background: #7d5b24;
+        }
+
+        .progress-dot.active::before {
+            border-color: #ed6a4a;
+            background: #b83b2a;
+            box-shadow: 0 0 12px rgba(184,59,42,.55);
+        }
+
+        .quiz-wrap {
+            padding: 0 14px 24px;
+        }
+
+        .event-card {
+            position: relative;
+            border: 1px solid rgba(216,180,90,.34);
+            background:
+                linear-gradient(180deg, rgba(27,28,28,.5), rgba(7,9,11,.96)),
+                radial-gradient(circle at 65% 20%, rgba(176,78,28,.22), transparent 28%);
+            min-height: 210px;
+            padding: 22px 18px 18px;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0,0,0,.42);
+        }
+
+        .event-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: .25;
+            background:
+                linear-gradient(155deg, transparent 0 25%, rgba(255,255,255,.03) 25.2% 25.7%, transparent 26%),
+                radial-gradient(circle at 18% 80%, rgba(178,62,25,.2), transparent 16%);
+        }
+
+        .danger-tag {
+            position: relative;
+            z-index: 2;
+            color: #d35d42;
+            font-size: 11px;
+            letter-spacing: .18em;
+            margin-bottom: 12px;
+        }
+
+        .scenario-text {
+            position: relative;
+            z-index: 2;
+            color: #efe5d1;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 700;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            margin-top: 12px;
+        }
+
+        .option-item {
+            min-height: 64px;
+            position: relative;
+            display: grid;
+            grid-template-columns: 42px 1fr;
+            gap: 10px;
+            align-items: center;
+            border: 1px solid rgba(216,180,90,.25);
+            background: linear-gradient(180deg, rgba(22,25,29,.96), rgba(12,14,17,.96));
+            color: #cfc7b9;
+            padding: 9px 12px;
+            cursor: pointer;
+            transition: .18s ease;
+        }
+
+        .option-item::before {
+            content: attr(data-letter);
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            transform: rotate(45deg);
+            border: 1px solid #8d6b31;
+            color: var(--gold-bright);
+            background: #17130d;
+            font-weight: 900;
+            font-size: 15px;
+        }
+
+        .option-item::after {
+            content: attr(data-letter);
+            position: absolute;
+            left: 20px;
+            width: 34px;
+            text-align: center;
+            color: var(--gold-bright);
+            font-weight: 900;
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .option-text {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-size: 13px;
+            line-height: 1.55;
+        }
+
+        .option-item.selected {
+            border-color: #c44d35;
+            background: linear-gradient(180deg, rgba(61,27,20,.96), rgba(24,16,15,.98));
+            box-shadow: inset 3px 0 0 #b83a2b, 0 0 18px rgba(157,40,31,.18);
+            color: #f0e4ce;
+        }
+
+        .quiz-actions {
+            margin-top: 14px;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 10px;
+        }
+
+        .quiz-btn {
+            min-height: 50px;
+            border-radius: 3px;
+            letter-spacing: .1em;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .quiz-btn.secondary {
+            border: 1px solid #4a443b;
+            background: rgba(12,14,17,.88);
+            color: #766e62;
+        }
+
+        .quiz-btn.primary {
+            border: 1px solid #b67d37;
+            background: linear-gradient(180deg, #8e241c, #601711);
+            color: #f0d79d;
+        }
+
+        .quiz-btn.primary:disabled {
+            opacity: .38;
+            cursor: default;
+        }
+
+        .quiz-quote {
+            margin: 24px 20px 2px;
+            padding: 22px 10px 28px;
+            text-align: center;
+            border-top: 1px solid rgba(216,180,90,.13);
+            color: #b69d6b;
+            font-size: 12px;
+            line-height: 1.9;
+        }
+
+        /* 结果页 */
+        #captureCard {
+            padding: 0 12px 24px;
+        }
+
+        #resultHeroCard {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(216,180,90,.38);
+            background:
+                linear-gradient(180deg, rgba(8,11,14,.1), rgba(8,10,12,.82) 38%, #0a0c0f 100%),
+                radial-gradient(circle at 50% 22%, rgba(213,140,55,.28), transparent 25%),
+                linear-gradient(135deg, #16181a, #0b0d10 52%, #050608);
+            box-shadow: 0 14px 34px rgba(0,0,0,.45);
+            min-height: 690px;
+        }
+
+        #resultHeroCard::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: .36;
+            background:
+                radial-gradient(circle at 74% 22%, rgba(206,70,25,.18), transparent 12%),
+                linear-gradient(158deg, transparent 0 48%, rgba(255,255,255,.028) 48.2% 48.5%, transparent 48.8%),
+                repeating-linear-gradient(0deg, rgba(255,255,255,.01) 0 1px, transparent 1px 5px);
+        }
+
+        .result-scene {
+            position: relative;
+            height: 230px;
+            border-bottom: 1px solid rgba(216,180,90,.25);
+            overflow: hidden;
+        }
+
+        .result-scene::before {
+            content: "";
+            position: absolute;
+            left: -6%;
+            right: -6%;
+            bottom: 0;
+            height: 120px;
+            background:
+                linear-gradient(165deg, transparent 0 8%, #07080a 8.5% 18%, transparent 18.5% 26%, #07080a 26.5% 39%, transparent 39.5% 48%, #07080a 48.5% 61%, transparent 61.5% 70%, #07080a 70.5% 82%, transparent 82.5%),
+                linear-gradient(180deg, transparent 0 54%, #060709 55% 100%);
+            opacity: .94;
+        }
+
+        .result-scene::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 67% 44%, rgba(232,171,88,.34), transparent 14%),
+                linear-gradient(90deg, rgba(0,0,0,.58), transparent 28%, transparent 75%, rgba(0,0,0,.48));
+        }
+
+        .scene-copy {
+            position: absolute;
+            z-index: 2;
+            left: 18px;
+            right: 18px;
+            bottom: 16px;
+            text-align: center;
+        }
+
+        .scene-copy .small {
+            color: #8e7b55;
+            font-size: 10px;
+            letter-spacing: .3em;
+        }
+
+        .scene-copy .name {
+            margin-top: 6px;
+            color: #d7bd7a;
+            font-size: 12px;
+            letter-spacing: .18em;
+        }
+
+        .result-core {
+            position: relative;
+            z-index: 2;
+            padding: 24px 18px 22px;
+            text-align: center;
+        }
+
+        .blood-seal {
+            position: absolute;
+            right: 16px;
+            top: 12px;
+            width: 62px;
+            height: 62px;
+            display: grid;
+            place-items: center;
+            color: #e05240;
+            border: 3px double #a52b21;
+            transform: rotate(-12deg);
+            font-size: 15px;
+            font-weight: 900;
+            line-height: 1.15;
+            background: rgba(81,12,10,.18);
+            box-shadow: inset 0 0 0 2px rgba(163,43,33,.18);
+        }
+
+        .result-lead {
+            color: var(--gold-dim);
+            font-size: 13px;
+            letter-spacing: .26em;
+            margin-bottom: 8px;
+        }
+
+        .identity-name {
+            color: var(--gold-bright);
+            font-size: clamp(44px, 13vw, 58px);
+            line-height: 1.08;
+            font-weight: 900;
+            letter-spacing: .08em;
+            text-shadow: 0 2px 18px rgba(212,175,55,.2);
+            margin: 4px 0 12px;
+        }
+
+        .role-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 36px;
+            padding: 0 18px;
+            border: 1px solid rgba(216,180,90,.4);
+            color: #d5bd83;
+            background: rgba(17,16,13,.7);
+            font-size: 12px;
+            letter-spacing: .12em;
+            margin-bottom: 16px;
+        }
+
+        .result-desc {
+            max-width: 330px;
+            margin: 0 auto;
+            color: #d6cdbf;
+            font-size: 13px;
+            line-height: 1.9;
+        }
+
+        .ability-grid {
+            margin-top: 19px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .ability-card {
+            min-height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px;
+            border: 1px solid rgba(216,180,90,.3);
+            background: rgba(10,12,14,.76);
+        }
+
+        .ability-card .label {
+            color: #d1bc87;
+            font-size: 14px;
+            letter-spacing: .08em;
+        }
+
+        .ability-card .score {
+            color: var(--gold-bright);
+            font-size: 34px;
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .identity-poem {
+            margin-top: 20px;
+            color: #dbc07b;
+            font-size: 14px;
+            line-height: 1.8;
+            letter-spacing: .05em;
+        }
+
+        .details-wrap {
+            padding-top: 14px;
+        }
+
+        .section-card {
+            border: 1px solid rgba(216,180,90,.2);
+            background: rgba(15,18,22,.9);
+            padding: 16px 15px;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--gold);
+            font-size: 13px;
+            letter-spacing: .12em;
+            margin-bottom: 12px;
+        }
+
+        .section-title::before {
+            content: "";
+            width: 3px;
+            height: 14px;
+            background: var(--crimson-bright);
+        }
+
+        .survival-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .grid-cell {
+            min-height: 72px;
+            padding: 10px;
+            border: 1px solid rgba(216,180,90,.17);
+            background: rgba(7,9,11,.68);
+        }
+
+        .grid-cell label {
+            display: block;
+            color: #777267;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .grid-cell span {
+            color: #ded4c3;
+            font-size: 12px;
+            line-height: 1.55;
+            font-weight: 700;
+        }
+
+        .plain-desc {
+            color: #bbb3a7;
+            font-size: 13px;
+            line-height: 1.85;
+        }
+
+        .chronicle-timeline {
+            position: relative;
+            padding-left: 19px;
+        }
+
+        .chronicle-timeline::before {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 8px;
+            bottom: 8px;
+            width: 1px;
+            background: rgba(216,180,90,.23);
+        }
+
+        .chronicle-node {
+            position: relative;
+            padding: 0 0 15px 5px;
+        }
+
+        .chronicle-node:last-child { padding-bottom: 0; }
+
+        .chronicle-dot {
+            position: absolute;
+            left: -18px;
+            top: 5px;
+            width: 8px;
+            height: 8px;
+            transform: rotate(45deg);
+            background: var(--gold);
+            box-shadow: 0 0 10px rgba(216,180,90,.3);
+        }
+
+        .chronicle-year {
+            color: var(--gold);
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .chronicle-text {
+            color: #bdb5a8;
+            font-size: 12px;
+            line-height: 1.75;
+        }
+
+        .artifact-row {
+            color: #bdb5a8;
+            font-size: 12px;
+            line-height: 1.75;
+            margin-bottom: 9px;
+        }
+
+        .artifact-row:last-child { margin-bottom: 0; }
+        .artifact-row strong { color: #d1b36b; }
+
+        .death-warning {
+            margin-top: 12px;
+            padding: 11px 12px;
+            border-left: 3px solid var(--crimson-bright);
+            background: rgba(112,24,18,.13);
+            color: #d95a49;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .comment-node {
+            background: rgba(7,9,11,.72);
+            border-left: 2px solid rgba(216,180,90,.24);
+            padding: 9px 10px;
+            margin-top: 8px;
+            color: #bcb5a9;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .comment-node strong { color: var(--gold); }
+
+        .result-actions {
+            padding: 0 12px 28px;
+            display: grid;
+            gap: 10px;
+        }
+
+        .result-actions button {
+            width: 100%;
+            min-height: 54px;
+            border-radius: 3px;
+            cursor: pointer;
+            letter-spacing: .1em;
+            font-weight: 800;
+        }
+
+        .save-card-btn {
+            border: 1px solid #c68b3d;
+            color: #f4daa3;
+            background: linear-gradient(180deg, #9b2b20, #651812);
+        }
+
+        .save-book-btn,
+        .restart-btn {
+            border: 1px solid rgba(216,180,90,.25);
+            color: #a99a7d;
+            background: rgba(12,14,17,.78);
+        }
+
+        @media (min-width: 700px) {
+            body { padding: 18px 0; }
+            .app-shell { min-height: calc(100vh - 36px); border: 1px solid #252a30; border-radius: 14px; }
+        }
+
+        @media (max-width: 370px) {
+            .start-title { font-size: 38px; }
+            .identity-name { font-size: 42px; }
+            .scenario-text { font-size: 15px; }
+            .option-text { font-size: 12.5px; }
+            .ability-card .score { font-size: 30px; }
+        }
+
+
+        /* ===== v1.0 电影化素材版：移动端优先 ===== */
+        :root { color-scheme: dark; }
+        html, body { width: 100%; min-height: 100%; }
+        body { padding: 0; overscroll-behavior-y: none; }
+        .app-shell {
+            max-width: 430px;
+            min-height: 100svh;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            background: #07090c;
+        }
+        .top-brand {
+            padding: 20px 14px 10px;
+            background: linear-gradient(180deg, rgba(5,7,9,.98), rgba(5,7,9,.74) 74%, rgba(5,7,9,0));
+        }
+        .top-brand .brand-line { font-size: clamp(22px, 6.8vw, 29px); }
+        .top-brand .brand-sub { color: #a69a83; }
+
+        /* 开始页：真实电影场景，不再用 CSS 模拟战场 */
+        .start-hero {
+            min-height: min(54svh, 475px);
+            margin: 0;
+            border: 0;
+            background-image:
+                linear-gradient(180deg, rgba(3,5,7,.08) 0%, rgba(3,5,7,.04) 38%, rgba(4,6,8,.45) 67%, #07090c 100%),
+                linear-gradient(90deg, rgba(0,0,0,.25), transparent 25%, transparent 75%, rgba(0,0,0,.25)),
+                url('./assets/start.jpg');
+            background-size: cover;
+            background-position: center 47%;
+            box-shadow: none;
+        }
+        .start-hero::before { display: none; }
+        .start-hero::after {
+            background: linear-gradient(180deg, transparent 0 48%, rgba(7,9,12,.08) 55%, rgba(7,9,12,.96) 100%);
+        }
+        .start-hero-content { left: 22px; right: 22px; bottom: 28px; text-align: left; }
+        .start-title {
+            font-size: clamp(46px, 14vw, 61px);
+            text-shadow: 0 4px 20px #000, 0 0 28px rgba(216,180,90,.2);
+        }
+        .start-kicker { font-size: 14px; }
+        .profile-panel { margin: -4px 14px 0; }
+        .btn-primary { margin-left: 14px; margin-right: 14px; width: calc(100% - 28px); }
+        .start-footnote { padding-bottom: 26px; }
+
+        /* 答题：一题 = 一张事件电影卡 + 四个行动 */
+        .progress-box { padding-left: 16px; padding-right: 16px; }
+        .quiz-wrap { padding: 0 12px 22px; }
+        .event-card {
+            min-height: 0;
+            padding: 0;
+            background: #090b0e;
+            border: 1px solid rgba(216,180,90,.34);
+            box-shadow: 0 12px 32px rgba(0,0,0,.35);
+        }
+        .event-card::before { display: none; }
+        .event-image {
+            width: 100%;
+            height: clamp(178px, 27svh, 228px);
+            background-image: url('./assets/event-war.jpg');
+            background-size: cover;
+            background-position: center 46%;
+            position: relative;
+            transition: opacity .2s ease, filter .2s ease;
+        }
+        .event-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,.02), rgba(0,0,0,.1) 58%, rgba(7,9,12,.8) 100%);
+        }
+        .event-copy { padding: 13px 15px 15px; background: linear-gradient(180deg, #0b0e12, #090b0e); }
+        .danger-tag { margin-bottom: 7px; }
+        .scenario-text { font-size: clamp(14px, 4vw, 16px); line-height: 1.7; }
+        .options-list { gap: 8px; margin-top: 10px; }
+        .option-item {
+            min-height: 58px;
+            grid-template-columns: 38px 1fr;
+            padding: 8px 10px;
+            touch-action: manipulation;
+        }
+        .option-text { font-size: clamp(12px, 3.45vw, 13.5px); line-height: 1.48; }
+        .option-item.is-locking { pointer-events: none; }
+        .quiz-actions { display: none !important; }
+        .quiz-back {
+            display: block;
+            min-height: 42px;
+            margin: 10px auto 0;
+            padding: 0 14px;
+            border: 0;
+            background: transparent;
+            color: #766f64;
+            font-size: 12px;
+            letter-spacing: .08em;
+            cursor: pointer;
+        }
+        .quiz-back:disabled { opacity: .24; }
+        .quiz-quote { margin-top: 6px; padding-top: 14px; }
+
+        /* 结果：职业大类决定电影背景，HTML 负责动态文字 */
+        #captureCard { padding: 0 10px 22px; }
+        #resultHeroCard {
+            min-height: 0;
+            border-color: rgba(216,180,90,.42);
+            background: #080a0d;
+        }
+        #resultHeroCard::before { pointer-events: none; }
+        .result-scene {
+            height: clamp(280px, 44svh, 395px);
+            background-image:
+                linear-gradient(180deg, rgba(3,5,7,.03), rgba(3,5,7,.08) 48%, rgba(7,9,12,.9) 100%),
+                var(--result-bg, url('./assets/role-power.jpg'));
+            background-size: cover;
+            background-position: var(--result-pos, center 45%);
+            border-bottom: 0;
+        }
+        .result-scene::before { display: none; }
+        .result-scene::after {
+            background: linear-gradient(180deg, rgba(0,0,0,.03), transparent 40%, rgba(7,9,12,.95) 100%);
+        }
+        .scene-copy { bottom: 18px; text-shadow: 0 2px 10px #000; }
+        .result-core {
+            margin-top: -2px;
+            padding: 19px 16px 20px;
+            background: linear-gradient(180deg, #0a0c0f, #080a0d);
+        }
+        .identity-name { font-size: clamp(44px, 13vw, 56px); }
+        .result-desc { font-size: 13px; max-width: 340px; }
+        .ability-card { min-height: 66px; padding: 8px 12px; }
+        .ability-card .score { font-size: 31px; }
+        .identity-poem { margin-top: 16px; }
+        .section-card { background: rgba(13,16,20,.96); }
+        .result-actions { padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px)); }
+
+        /* 小屏压缩：360px 宽也保持一题不显得拥挤 */
+        @media (max-width: 380px) {
+            .top-brand { padding-top: 14px; }
+            .start-hero { min-height: 48svh; }
+            .event-image { height: 168px; }
+            .option-item { min-height: 54px; }
+            .option-text { font-size: 12px; }
+            .quiz-quote { display: none; }
+            .result-scene { height: 265px; }
+            .blood-seal { width: 56px; height: 56px; font-size: 13px; }
+        }
+
+        @media (min-width: 700px) {
+            body { padding: 18px 0; }
+            .app-shell { min-height: calc(100vh - 36px); }
+        }
+
+    </style>
+</head>
+<body>
+<div class="app-shell">
+    <div class="top-brand" id="globalHeader">
+        <div class="brand-line">穿越东汉末年</div>
+        <div class="brand-sub" id="headerOmen">乱世之中 · 见真我</div>
+    </div>
+
+    <div class="progress-box" id="progressBox">
+        <div class="progress-label-row">
+            <span id="qIndexText">第 1 / 10 题</span>
+            <span>十重杀局</span>
+        </div>
+        <div class="progress-dots" id="progressDots"></div>
+    </div>
+
+    <!-- 1. 入世建档 -->
+    <div class="view-section active" id="startView">
+        <section class="start-hero">
+            <div class="start-hero-content">
+                <div class="eyebrow">乱世建档 · 命籍初开</div>
+                <div class="start-title">入世建档</div>
+                <div class="start-kicker">一念之间 · 便是另一段人生</div>
+            </div>
+        </section>
+
+        <section class="profile-panel">
+            <div class="profile-label">请留下你的名字</div>
+            <div class="name-wrap">
+                <input type="text" id="userNameInput" placeholder="例如：子轩" maxlength="8" autocomplete="off">
+                <button class="dice-btn" type="button" onclick="randomizeName()" aria-label="随机名字">⚄</button>
+            </div>
+            <div class="profile-hint">这将是你在东汉的姓名</div>
+        </section>
+
+        <section class="start-copy">
+            <h3>准备好了吗？</h3>
+            <p>你将以现代人的灵魂，降临东汉末年。<br>十道抉择，决定你的乱世命格与一生去向。</p>
+        </section>
+
+        <button class="btn-primary" onclick="startQuiz()">开启乱世之旅 〉</button>
+        <div class="start-footnote">这一次，你会成为什么样的人？</div>
+    </div>
+
+    <!-- 2. 十重杀局 -->
+    <div class="view-section" id="quizView">
+        <div class="quiz-wrap">
+            <section class="event-card">
+                <div class="event-image" id="eventImage" aria-hidden="true"></div>
+                <div class="event-copy">
+                    <div class="danger-tag">生死一线 · 请选择你的行动</div>
+                    <div class="scenario-text" id="questionTitle">推演题干载入中...</div>
+                </div>
+            </section>
+            <div class="options-list" id="optionsList"></div>
+            <button class="quiz-back" type="button" onclick="previousQuestion()" id="prevBtn">〈 返回上一题</button>
+            <div class="quiz-quote">“乱世之中，每一个选择，都是生死的伏笔。”</div>
+        </div>
+    </div>
+
+    <!-- 3. 命格结果 -->
+    <div class="view-section" id="resultView">
+        <div id="captureCard">
+            <section id="resultHeroCard">
+                <div class="result-scene">
+                    <div class="scene-copy">
+                        <div class="small">东汉末年 · 英雄自有答案</div>
+                        <div class="name">命主【<span id="displayUserName">无名</span>】</div>
+                    </div>
+                </div>
+
+                <div class="result-core">
+                    <div class="blood-seal">命数<br>已定</div>
+                    <div class="result-lead">你的乱世命格</div>
+                    <div class="identity-name" id="resIdentityTitle">奇谋策士</div>
+                    <div class="role-chip" id="resRoleChip">天生掌局者 · 乱世破局人</div>
+                    <div class="result-desc" id="resHeroDesc">你不是最守规矩的人。你更擅长在乱局里接管局面，并重新制定规则。</div>
+                    <div class="ability-grid" id="abilityGrid"></div>
+                    <div class="identity-poem" id="resPoem">算尽天机留一着，运筹帷幄定乾坤</div>
+                </div>
+            </section>
+
+            <div class="details-wrap">
+                <section class="section-card">
+                    <div class="section-title">乱世判词</div>
+                    <div class="survival-grid">
+                        <div class="grid-cell">
+                            <label>天命生存评级</label>
+                            <span id="resRating">SSS · 逆天改命</span>
+                        </div>
+                        <div class="grid-cell">
+                            <label>预期大限寿元</label>
+                            <span id="resAge">享年 63 岁</span>
+                        </div>
+                        <div class="grid-cell">
+                            <label>宿命投奔归宿</label>
+                            <span id="resFaction">曹魏 · 唯才是举</span>
+                        </div>
+                        <div class="grid-cell">
+                            <label>命中最大杀劫</label>
+                            <span id="resDanger">算尽机关 · 多谋早衰</span>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-card">
+                    <div class="section-title">命格解析</div>
+                    <div class="plain-desc" id="resDesc"></div>
+                </section>
+
+                <section class="section-card">
+                    <div class="section-title">命主一生重大转折编年</div>
+                    <div class="chronicle-timeline" id="chronicleTimeline"></div>
+                </section>
+
+                <section class="section-card">
+                    <div class="section-title">乱世本命法宝 & 穿越绝学</div>
+                    <div class="artifact-row"><strong>【护体神兵】</strong><span id="resWeapon"></span></div>
+                    <div class="artifact-row"><strong>【降维秘术】</strong><span id="resModernSkill"></span></div>
+                </section>
+
+                <section class="section-card">
+                    <div class="section-title">乱世断语 & 离谱死因</div>
+                    <div class="death-warning"><strong>【暴毙死因预警】</strong><span id="resDeathWarning"></span></div>
+                </section>
+
+                <section class="section-card">
+                    <div class="section-title">群雄青梅煮酒密评</div>
+                    <div id="resComments"></div>
+                </section>
+            </div>
+        </div>
+
+        <div class="result-actions">
+            <button class="save-card-btn" onclick="saveResultCard(this)">保存结果卡 ↓</button>
+            <button class="save-book-btn" onclick="saveFullBook(this)">保存完整命书</button>
+            <button class="restart-btn" onclick="restartQuiz()">重踏乱世 · 重新推演</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const DIMENSIONS = [
+        { key: "decide", label: "决断" },
+        { key: "empathy", label: "共情" },
+        { key: "innovate", label: "开创" },
+        { key: "insight", label: "洞察" },
+        { key: "express", label: "表达" },
+        { key: "business", label: "经营" },
+        { key: "indep", label: "独立" },
+        { key: "duty", label: "担当" }
+    ];
+
+    const OMENS = ["中平大凶 · 岁在甲子", "荧惑守心 · 汉祚微芒", "白虹贯日 · 伏尸百万", "狂澜既倒 · 龙蛇起陆", "杀气冲霄 · 孤鸿泣血"];
+
+    // 50 道乱世题库
+    const QUESTION_BANK = [
+        { q: "黄巾溃军屠村掠杀，你随身仅有一枚浸血硬饼，耳后马蹄震地，你如何自处？", options: [{ text: "登枯树纵观烽烟逃散之势，避开骑兵合围直扑深溪", tag: "insight" }, { text: "将饼塞入路旁奄奄一息的小儿口中，问明近处避险坞堡方向", tag: "empathy" }, { text: "削尖枯木独伏荒坟芦苇荡中，静候杀戮止息绝不露头", tag: "indep" }, { text: "纠集三五个持粪叉的精壮逃难农汉，背水列阵抵御落单骑卒", tag: "duty" }] },
+        { q: "两名持生锈环首刀的悍卒将你逼入死胡同欲剁手搜身，你手无寸铁：", options: [{ text: "直视敌眸暴喝：“吾乃大贤良师亲授符使，胆敢犯者立遭五雷轰顶！”", tag: "express" }, { text: "佯作筛糠下跪，猝然抓起泥沙扬其双目，夺刀割喉一人！", tag: "decide" }, { text: "自怀中摸出私藏的两块粗盐与玉环，好言与其议定‘带路进城分润’", tag: "business" }, { text: "顺墙根微颤后退，余光锁死左侧半塌泥墙，翻墙跳入粪坑脱身", tag: "insight" }] },
+        { q: "流亡至坚城外，闭城悬吊‘射杀一切靠近者’，数百饥民暴毙沟壑，你熬命之策：", options: [{ text: "以破瓦砂锅为饥民筑简易滤盐取水灶，被推为城下难民首脑", tag: "innovate" }, { text: "替垂死流民代写遗书、传递口讯，以文字之力向城头守卒乞残羹", tag: "express" }, { text: "主动替城关粮商卸货搬尸，半日内以超常账力替掌柜平清历年暗账", tag: "business" }, { text: "避开尸堆，独走峭壁崖缝抓岩蝠采毒草，杜绝一切疫疠传身", tag: "indep" }] },
+        { q: "城守贴杀令：“贼寇袭城在即，凡自备兵刃守堞斩首者，赐千钱免三丁徭”，你？", options: [{ text: "手撕血书登城领命，刀口舐血方能在此吃人世道杀出一条生路", tag: "decide" }, { text: "细观城垛坍塌与粮车配给，推算此关必失，趁暮色潜遁向南", tag: "insight" }, { text: "不出战，游走城内富户之间低价收购死人甲胄，高价倒卖给守将", tag: "business" }, { text: "潜入街坊苦劝邻里藏匿儿男，莫作军阀功名簿上的枉死枯骨", tag: "empathy" }] },
+        { q: "董卓铁骑纵火洛阳，太庙崩裂百官伏诛。置身于熊熊帝京烈焰，你心中何所思？", options: [{ text: "“万类霜天竞自由，此等暴虐老贼亦得天下，我何不可取而代之！”", tag: "innovate" }, { text: "“四百年汉室风华尽成灰烬，这万千黎庶骨血何辜至此……”", tag: "empathy" }, { text: "“西凉羌兵嗜杀无谋，诸侯必盟，天下群雄割据死局已成，大机缘已至”", tag: "insight" }, { text: "“金珠玉帛皆是废铁，速速趁乱囤积城外万亩粮仓与骡马转运”", tag: "business" }] },
+        { q: "西凉死骑押解百万洛阳难民强迁长安，路旁捡到一位佩戴皇室玉佩的啼哭幼童：", options: [{ text: "冒着被巡骑格杀之罪，将其缝入褴褛被褥贴胸护送，誓不言弃", tag: "duty" }, { text: "立刻断定此乃日后面谒关东诸侯‘奇货可居’的最大筹码", tag: "business" }, { text: "多一人便多一重横死风险，轻推其入大户辎车底下，自己独自遁入夜色", tag: "indep" }, { text: "暗访队伍中泣血的老臣旧将，晓以大义托孤于其，自己从旁指点", tag: "insight" }] },
+        { q: "十八路诸侯会盟酸枣，帐内饮宴笙歌无人敢当讨贼先锋，若你位列中军：", options: [{ text: "“分兵奇袭！精锐出汜水，铁骑插武关截断后路，犹豫者天下共诛！”", tag: "innovate" }, { text: "扯烂盟旗痛斥袁绍曹操拥兵观望，句句诛心指其为国贼之伥", tag: "express" }, { text: "冷眼旁观，转手将各镇诸侯调拨的军需战马在营外互易倒卖赚翻", tag: "business" }, { text: "看透这帮私心裂土之辈成不了气候，连夜拔营寻找真正潜龙效命", tag: "decide" }] },
+        { q: "军阀割据渐成三足之势，凭你骨子里的杀伐本性，你最愿将身家性命托付给谁？", options: [{ text: "曹孟德：任人唯贤，哪怕有弑父之仇只要有谋略皆敢重用", tag: "innovate" }, { text: "刘玄德：颠沛流离数十载不弃百姓，君臣托孤死生相随", tag: "empathy" }, { text: "孙伯符：霸王再世快意恩仇，横扫江东六郡，痛快杀伐", tag: "decide" }, { text: "天下诸侯皆是刍狗，我自结寨独活，谁敢踏入我界定斩不饶", tag: "indep" }] },
+        { q: "守军被围孤城，粮尽断绝，士卒甚至相易为食，主帅问策，你进言：", options: [{ text: "“死守必死！选死士百人夜缒出城，以烈油焚尽敌营帅旗诱其合围后决死冲锋”", tag: "decide" }, { text: "“许以城破后三倍赋税特权，向城内大族暗室强行借取存粮度日”", tag: "business" }, { text: "“遣能言之士潜入敌营，陈述唇亡齿寒之利害，离间其联军主力”", tag: "express" }, { text: "“我亲自押粮散于各营，与卒同嚼马革战靴，敢有言退者立斩帐前”", tag: "duty" }] },
+        { q: "遭副手向主公告发你私藏敌将密信欲谋反，主公按剑而视杀机毕露，你？", options: [{ text: "掷下全盘舆图冷笑：“若某欲反，三日前官渡主公大营早已成灰烬！”", tag: "insight" }, { text: "拔佩刀斩断衣袍，横刀自刎前直视主公双目：“臣死不足惜，惜主公失天下矣”", tag: "indep" }, { text: "伏地落泪，细数当年雪夜护主脱险之旧伤，唤其结义同袍之情", tag: "empathy" }, { text: "顺水推舟：“密信确在，因臣已为主公定下一出诱敌全歼之诈降死计！”", tag: "innovate" }] },
+        { q: "军营突发恶疫，每日抬尸数百，哀号震天，军心濒临全线崩溃：", options: [{ text: "铁血封寨！染疾者立迁死谷，以生石灰封土断水，违令出圈者格杀", tag: "decide" }, { text: "脱下官袍亲入死棚喂药施针，以自身肉体安抚士卒暴乱之绝望", tag: "empathy" }, { text: "带亲卫深入毒瘴山涧，尝百草辨相克，以毒攻毒配熬解毒重汤", tag: "innovate" }, { text: "暗算全军战力损耗，力谏主帅弃寨退入阴凉深山，免于全军覆没", tag: "insight" }] },
+        { q: "官渡袁绍七十万步骑泰山压顶，曹营人人自危私写降书，此时你：", options: [{ text: "料定袁绍‘好谋无断必聚粮于一处’，押尽身家力劝曹公赌命烧乌巢", tag: "insight" }, { text: "两头下注，暗中托人向袁营谋士互通门路，务保宗族在两淮不灭", tag: "business" }, { text: "自领本部老弱扼守延津渡口，以血肉之躯为主力决胜争取半日", tag: "duty" }, { text: "乱世争霸皆是虚妄，趁黄河水寒结冰，带心腹数人浮冰潜逃荆南", tag: "indep" }] },
+        { q: "留守许昌内城，前线兵败流言四起，城中潜伏的国舅遗党带私兵围攻府库：", options: [{ text: "调集城防弩手居高临下乱箭齐发，亲斩首逆人头悬挂闹市", tag: "decide" }, { text: "立于危楼慷慨陈辞，历数曹公庇佑之恩，喝退煽动之乱民", tag: "express" }, { text: "引蛇出洞，故意开府库一门，将暗中反贼名单尽数诱出网罗", tag: "insight" }, { text: "散开死士护住府库老幼，亲持长槊立于阶前，死战不退", tag: "duty" }] },
+        { q: "赤壁战前曹公八十万战船蔽日，张昭等重臣苦劝主降，若你在吴侯帐下：", options: [{ text: "“割江东六郡以迎北师？江南父老世代皆为曹家奴仆矣！乞斩降臣！”", tag: "express" }, { text: "呈递冬至风向水文折，断定北方马队不耐潮热，三日内必生大疫", tag: "insight" }, { text: "主张改制蒙冲快舰灌装鱼油，造就‘连环火阵’引燃曹营水寨", tag: "innovate" }, { text: "私联两淮豪商，预备承接战后各路物资输送协议，掌控战后商路", tag: "business" }] },
+        { q: "设伏华容道截杀狼狈奔逃的曹操，曹操脱簪乞命，忆及往昔知遇厚恩，你：", options: [{ text: "军法无私！挥臂下令三千重弩齐发，枭其首级奠我战旗", tag: "decide" }, { text: "念其平定北方匈奴之大功，胸口绞痛，挥泪放其一线生机独受军法", tag: "empathy" }, { text: "迫其立下带毒血誓让出襄樊咽喉，并以曹氏重宝作抵换取通行", tag: "business" }, { text: "故意漏其从泥潭单骑脱困，使北方曹魏与孙刘继续死磕，以固三足之势", tag: "insight" }] },
+        { q: "受封穷荒之郡太守，满目皆是饿莩与白骨，盗匪割据四境，你的绝地手腕：", options: [{ text: "推行屯田制与曲辕犁，引入高产谷种，兴修深渠强筑粮仓", tag: "innovate" }, { text: "行重典乱世用猛药！组建铁血联甲，凡附匪行劫者满门抄斩", tag: "duty" }, { text: "开通无税市集，招揽南北逃亡走私马帮，以贸易活络全城血脉", tag: "business" }, { text: "开宗立社招徕流亡名儒，亲授经史平复离乱民心，以礼义聚众", tag: "express" }] },
+        { q: "朝廷推行九品官人法，门阀权贵世袭高位，寒门孤勇求官无门，掌铨选的你：", options: [{ text: "顶死世家大族屠刀威胁，强行将数名无籍孤煞之才点为州郡重官", tag: "duty" }, { text: "暗结门阀各房利益，明面给世族虚衔，实权暗中全塞给流民干将", tag: "insight" }, { text: "朝堂之上当面直刺门阀吸髓之恶，甘领流放绝不摧眉折腰", tag: "express" }, { text: "看透王朝末路门阀轮回，挂印拂袖入深山，留千古传世注疏", tag: "indep" }] },
+        { q: "生死交华佗因言获罪下狱，曹操传令即日处斩，你救人之策：", options: [{ text: "聚齐死士夜劫天牢，沿水道潜逃江夏，哪怕万劫不复亦不负袍泽", tag: "decide" }, { text: "亲涉险地直入曹府，巧借天象与舆论之重，以三寸舌博一线免死契机", tag: "express" }, { text: "散尽数十年家财贿通狱官，以重金寻死囚替死行金蝉脱壳之术", tag: "business" }, { text: "已知神仙难救，深夜潜入死牢取其泣血手稿《青囊书》，誓保华夏医脉", tag: "innovate" }] },
+        { q: "荒山绝岭得见失传百年的先秦冶铁古谱与百炼钢法，你将：", options: [{ text: "毫不保留奉献军中主帅，为麾下儿郎打造撕裂天下之重甲神兵", tag: "duty" }, { text: "誊抄万份广散天下铁匠铺，让乱世苦力免遭繁重劳役之苦", tag: "empathy" }, { text: "开辟私密地下铁炉，垄断周边战区神兵铁器专营，敛天下金铁之富", tag: "business" }, { text: "将其深藏于深山绝壁洞窟，除己之外纵身死亦绝不示于贪婪世人", tag: "indep" }] },
+        { q: "主公称帝大典封赏开国元勋，手握免死金券与万户侯爵，你内心最渴望：", options: [{ text: "领调兵虎符与前线大印，荡平北疆塞外四方不臣之地", tag: "decide" }, { text: "执掌天下大司农与赋税度支，作帝国这艘庞大战舰的真正操盘者", tag: "business" }, { text: "兼修国史与天下太学，以手中毫墨定义这百年乱世的忠奸善恶", tag: "express" }, { text: "辞去一切权柄退隐太湖，一蓑烟雨任平生，此生不复入帝京", tag: "indep" }] },
+        { q: "白发暮年回望昔日袍泽皆化黄土，残阳铺满荒冢，你此生最大慰藉：", options: [{ text: "“我亲手撕碎了朽烂的旧世，为后世砸出了一片新天地”", tag: "innovate" }, { text: "“在惨烈无情的乱世修罗场中，我从未违背本心背弃良善”", tag: "empathy" }, { text: "“任凭城头旌旗变换，我自守住这方傲骨，未曾沦为权贵家奴”", tag: "indep" }, { text: "“背负这万千黎民托付，临渊履薄冰，我把所有誓言扛到了最后”", tag: "duty" }] },
+        { q: "新帝登基多疑善猜，欲除昔日从龙老臣，部下力劝你‘反戈一击’，你：", options: [{ text: "当断立断！密发调兵令先围皇宫，抢占大义名分废立新皇", tag: "decide" }, { text: "交卸权柄闭门不出，装疯服毒示弱以安帝心，求全族老小活命", tag: "insight" }, { text: "入宫面圣直诉当年艰危，以元老之资晓以利害，化解君臣嫌隙", tag: "express" }, { text: "全臣子之大义，甘受贬黜绝地，亦决不在中原再燃半分烽烟", tag: "duty" }] },
+        { q: "若能自主选择穿越降生之命格，你宁可生在何家？", options: [{ text: "钟鸣鼎食、门生故吏遍天下的四世三公之门，执掌规则", tag: "business" }, { text: "世代隐修、一技绝伦的机关巧匠寒舍，凭手艺笑看烽火", tag: "indep" }, { text: "山环水抱、不见刀兵的桃花野渡，不知有汉无论魏晋", tag: "empathy" }, { text: "边陲塞下、代代死斗的戍卒将门，以百战军功横击天下", tag: "innovate" }] },
+        { q: "长风浩荡大浪淘沙，你认为护佑你活过这汉末百年杀局的底牌究竟是：", options: [{ text: "【雷霆万钧的杀伐决断】—— 犹豫立地成坟，敢断方得长存", tag: "decide" }, { text: "【心怀悲悯的共情温存】—— 极黑乱世之中，唯有温存换取死士舍命", tag: "empathy" }, { text: "【打破天地之开创胆气】—— 无路处踏出路，死局中砸出生天", tag: "innovate" }, { text: "【算尽苍生的深邃洞察】—— 众人见眼下，我已算透十年风云枯骨", tag: "insight" }] },
+        { q: "荒原枯井遭投烂尸毒水，数百逃荒妇孺渴死在即，你决断：", options: [{ text: "立斩投毒溃卒悬尸井沿，逼斥精壮去二十里外深山引山泉", tag: "duty" }, { text: "按相克之理改良土陶烧炭沉淀池，滤出微量活命净水", tag: "innovate" }, { text: "断定投毒者必在近处潜伏观望，设伏诱杀捕其全队套取水图", tag: "insight" }, { text: "以自己水壶甘霖救治垂危婴儿，安抚绝望崩溃之母", tag: "empathy" }] },
+        { q: "主公决意‘屠城连坐三日’以泄怒火，军刀已出鞘，你制止之法：", options: [{ text: "殿上拍案大骂主公暴虐丧心，不惜头撞金柱逼其收回成命", tag: "express" }, { text: "算清账目：屠城必致后方百县死拼，多耗粮草三百万石，得不偿失", tag: "business" }, { text: "私联三军正直将领合兵封锁军门，以兵谏阻杀戮于未然", tag: "decide" }, { text: "自知劝阻无望，连夜暗开水关水道，能放多少无辜百姓逃走便放多少", tag: "empathy" }] },
+        { q: "军渡峡谷忽逢连日山洪暴发，前路断绝后有追兵，你建言：", options: [{ text: "当机立断弃尽辎重金银，全军轻装攀援绝壁山梁抢占生路", tag: "decide" }, { text: "掘开上游堰塞大湖，借滔天洪峰反向水淹合围之敌军大营", tag: "innovate" }, { text: "督导死士冒死将重粮与文书抢上高地，丢一石立斩押运卒", tag: "duty" }, { text: "料定两军皆困泽国，遣善辩使者涉水赴敌营言和罢战互救", tag: "express" }] },
+        { q: "中军深夜突遭暴乱营啸，发狂士兵拔刀乱砍，你在帅帐之中：", options: [{ text: "严令帐外燃起冲天大火，凡敢踏入火线一步者不论亲疏格杀", tag: "decide" }, { text: "立于大车之上击战鼓怒啸，以贯日巨嗓反复点名安抚全营", tag: "express" }, { text: "吹灭帐灯握紧短刃隐于屏风死角，冷眼待乱局自行平息", tag: "indep" }, { text: "听音辨位，断定暴乱源自后营马厩，直插乱源将首恶立劈当场", tag: "insight" }] },
+        { q: "奉命扼守关隘被敌合围七日，粮尽泉枯，士卒绝望，你：", options: [{ text: "当众斩杀心爱战马分食将士，立誓‘城在人在，城破我先死’", tag: "duty" }, { text: "于关内深掘八丈引地脉渗水，以竹节相连引水救全关", tag: "innovate" }, { text: "集权统筹全关残粮，以毫厘计分发，违令私匿者全家斩决", tag: "business" }, { text: "夜开城门作溃退之势诱敌深入瓮城，引燃伏火与敌俱焚", tag: "decide" }] },
+        { q: "遇文姬归汉，凄凉抱残卷泣血荒野，你第一动作是：", options: [{ text: "聚周边世家出资妥善安置，以大义周旋为其赎回胡地骨肉", tag: "empathy" }, { text: "惊叹其胸中才学，连夜点灯秉烛替其整理抄录《胡笳十八拍》", tag: "express" }, { text: "自其泣诉中详密打探匈奴水草走势与左贤王布防，制成战图", tag: "insight" }, { text: "承包归汉使团一路补给，顺带开通北地皮毛走私商道", tag: "business" }] },
+        { q: "托孤重臣欲起兵篡夺幼主权柄，带甲兵封锁宫门，你将：", options: [{ text: "拔剑带殿前侍卫直冲叛相府邸，擒贼擒王先剁首辅", tag: "decide" }, { text: "手捧先帝遗诏立于朱雀门上昭告天下，以大义名分召各军勤王", tag: "express" }, { text: "暗通城外部署之少壮将领，以三方制衡让叛臣不敢妄动", tag: "insight" }, { text: "辞去官职，携幼主从密道潜往故旧属地，暂避凶锋重整山河", tag: "indep" }] },
+        { q: "破富庶敌城，诸将放纵士卒搜刮民财，你独行何事？", options: [{ text: "不取分毫，将分得的金帛财货尽数归还城中孤寡老弱", tag: "empathy" }, { text: "紧闭府库，将全州户籍黄册、田亩图谱全数封存归档护卫", tag: "insight" }, { text: "谏阻帅帐放纵抢掠之弊，痛斥此举将尽失天下黎庶归附之心", tag: "express" }, { text: "趁兵荒马乱之际，以最低价盘下城内各大荒废粮栈与商铺", tag: "business" }] },
+        { q: "出使敌国遭设鸿门宴，阶下刀斧手伏甲百人，你迈步入堂：", options: [{ text: "仰天大笑：“敌帅见客尚需刀斧壮胆，真鼠雀之辈也！”", tag: "express" }, { text: "环视席间偏将，一眼看破副帅脸有忿色，选其作攻心突破口", tag: "insight" }, { text: "袖中暗扣连珠机弩，若生异变先射杀主位，绝不束手就擒", tag: "decide" }, { text: "开案呈上对方最渴求的战备铁矿路线图，开门见山谈买卖", tag: "business" }] },
+        { q: "你研发的攻城机关因材料劣化在战阵中散架，致前锋受阻：", options: [{ text: "脱甲跪向死伤士卒引咎受罚，自扣全部俸银充作军抚", tag: "duty" }, { text: "连夜勘查折断面受力，改榫卯为熟铁包角，重制一台神机", tag: "innovate" }, { text: "排查木料采办，顺藤摸瓜将私扣军饷的军需将校立斩示众", tag: "insight" }, { text: "闭户三日不食不语，不画出更精纯之机括誓不出工坊", tag: "indep" }] },
+        { q: "大旱千里，万余饥民在仓门外持梃暴动求粮，你当权下令：", options: [{ text: "冒杀头死罪擅开府库放粮，甘受国法千刀万剐亦不负生民", tag: "duty" }, { text: "以工代赈！凡凿渠筑城者每日供稀饭两升，借力破灾荒", tag: "innovate" }, { text: "向城中粮霸巨贾施压，软硬兼施诱其出窖捐纳充公", tag: "express" }, { text: "严格军律严封仓门，乱世军粮不可动，违令冲击者立斩", tag: "decide" }] },
+        { q: "察觉主公赐酒有鸩毒欲灭口试忠，你坐于席前：", options: [{ text: "泼酒于地痛斥主公多疑狭隘，长啸拂袖杀出王府", tag: "express" }, { text: "借宽袍遮掩暗倒毒酒入广袖海绵，佯作醉倒逃过一劫", tag: "insight" }, { text: "仰天饮尽以死全忠，令多疑主公终身抱憾自食愧果", tag: "duty" }, { text: "借敬酒近身暴起，执玉壶挟持主公直冲城门突围", tag: "decide" }] },
+        { q: "荒原走散身边唯剩伤重战马，四顾无援黄沙蔽日：", options: [{ text: "徒步牵马悉心割肉敷药，一人一骑相濡以沫誓死相依", tag: "empathy" }, { text: "斩马剥肉制干粮水囊，单身一人横穿千里大漠求存", tag: "decide" }, { text: "借星斗山势辨识古道，潜行避开一切烽燧与官道", tag: "indep" }, { text: "牵马入荒村与老农换取粗布农服，隐名埋姓作逃荒老农", tag: "business" }] },
+        { q: "敌军以全城百姓性命相要挟逼你献关，城破已不可逆：", options: [{ text: "守土有责！将官在关在，城毁人亡决不向凶徒屈膝", tag: "duty" }, { text: "佯允投降单身入敌营谈判，暗怀火石引燃敌军炸药全库", tag: "innovate" }, { text: "为救全城生灵开门罢兵，甘受反叛骂名任由敌酋千刀万剐", tag: "empathy" }, { text: "虚与委蛇拖延时辰，暗令城中老幼自干枯水门悄然撤空", tag: "insight" }] },
+        { q: "奇人断言你三年内必死于非命，血光冲天，你闻言：", options: [{ text: "“我命由我不由天，天下大势尽在我手，何惧怪力乱神！”", tag: "innovate" }, { text: "剖析其推导星象法门，以严密数理逻辑驳其虚妄之谶", tag: "insight" }, { text: "即日交印避世绝壁草庐，清心修养以避凡尘因果业报", tag: "indep" }, { text: "借其占断之能，以重金聘其为幕僚测算敌对诸侯之气数", tag: "business" }] },
+        { q: "面对阵营内部日益严峻的党同伐异与相互倾轧，你的立命之术：", options: [{ text: "独善其身不涉党争，唯凭无人可替代之绝顶本领自立", tag: "indep" }, { text: "八面玲珑周旋其间，于各方大佬间扮演不可或缺之和事佬", tag: "express" }, { text: "暗记各派把柄与资金账册，待其两败俱伤时收网定鼎", tag: "insight" }, { text: "自竖大旗，笼络结义忠贞敢死之士，组建独立嫡系卫队", tag: "innovate" }] },
+        { q: "贬荒裔烟瘴充小吏，土人屡屡暴动杀官，你的驭下之策：", options: [{ text: "着土人衣裳共嚼槟榔，通其语言习俗，化解百年深仇", tag: "empathy" }, { text: "输中原铁器与蚕桑法，设互市让酋长发家致富自愿归化", tag: "business" }, { text: "携少壮亲兵雷霆诛除作乱巨头，对其余部落广开生路", tag: "decide" }, { text: "修蛮荒异物志，考据山川奇珍，怡然自得安之若素", tag: "express" }] },
+        { q: "敌酋许以‘裂土封王’之密信诱你通敌，拆信瞬间你：", options: [{ text: "斩来使，将密信并首级连夜送达帅帐以表昭昭赤胆", tag: "duty" }, { text: "留信设反间死局，将计就计诱敌孤军深入大包围圈", tag: "innovate" }, { text: "密藏信函不发，作为日后被防范时全身而退之制衡底牌", tag: "insight" }, { text: "挥毫作万言讨贼帖痛斥敌酋，词锋诛心令其羞煞", tag: "express" }] },
+        { q: "夏日酷战士卒中暑横死无数，你创何法绝地求生：", options: [{ text: "引深涧寒泉作引流喷泉，熬煮青草石膏汤解全军死渴", tag: "innovate" }, { text: "脱甲查哨，严禁烈日操练，将帅帐让予中暑濒死兵丁", tag: "empathy" }, { text: "改白昼行军为月夜疾进，昼伏密林以避酷暑毒日", tag: "decide" }, { text: "重金自盐枭处采办硝石，于军中行硝石化冰奇法降温", tag: "business" }] },
+        { q: "火海将吞噬内廷秘藏之先秦残简孤卷，危难之际你：", options: [{ text: "不顾落梁崩塌涉身烈焰，抢抢华夏不可再生之道统遗编", tag: "duty" }, { text: "凭过目不忘之能强记核心篇章，出险后彻夜默写复原", tag: "insight" }, { text: "雇大车将残卷尽数转出，转手开价售予求贤若渴的四方霸主", tag: "business" }, { text: "密封铜匣深埋地宫，立誓待天下宁日方启封传世", tag: "indep" }] },
+        { q: "至亲恩公沦为通敌卖国之罪魁，法场之上你：", options: [{ text: "大义灭亲，亲执刑令验明正身，宁负私恩不负天下公义", tag: "decide" }, { text: "暗中登门求其自裁留存尊严，若不成，亲至刑场披麻收骨", tag: "empathy" }, { text: "彻查其反叛背后之冤屈底细，呈报枢密争取留全家一线血脉", tag: "insight" }, { text: "公开发檄声讨其悖逆之行，割袍断义从此陌路无干", tag: "express" }] },
+        { q: "绝地突围三缺其一，你必带谁人随行？", options: [{ text: "受重伤却为自己挡过致命冷箭的盲目老卒", tag: "empathy" }, { text: "熟谙毒虫山瘴、生性冷僻的荒野猎户", tag: "indep" }, { text: "单手舞大铁戟、凶悍善战视死如归的血色死士", tag: "decide" }, { text: "背负细软金叶、掌握北方商路粮仓暗桩的富商", tag: "business" }] },
+        { q: "主公暴毙，诸将欲分金银散伙自立，危急存亡之秋：", options: [{ text: "拔剑斩案！逼诸将推幼主承继，违令散伙者视为叛逆斩杀", tag: "duty" }, { text: "剖析分崩之弊：散伙必遭曹刘分而食之，力陈合则两利", tag: "insight" }, { text: "收拢本部军马连夜占领险隘自固，乱局之中自成霸业", tag: "innovate" }, { text: "长叹知大势已去，散千金还乡，买舟泛于烟波浩渺间", tag: "indep" }] },
+        { q: "天下重归一统，万民炊烟再起，回望烽烟你心声：", options: [{ text: "“终于，后世儿孙不必尝我等经历之离乱生啖之苦矣”", tag: "empathy" }, { text: "“这巍巍江山之基石，终究浸透我亲手敲下之铁血印记”", tag: "innovate" }, { text: "“天地不仁万物为刍狗，繁华过眼，终归是一抔黄土”", tag: "indep" }, { text: "“青山依旧在，几度夕阳红。惯看秋月春风，浊酒喜相逢”", tag: "express" }] },
+        { q: "后世史家定夺你的百年盖棺论定，你属意何辞？", options: [{ text: "【挽狂澜于既倒，撑大厦于断梁】—— 尽忠报国，百死不折", tag: "duty" }, { text: "【妙算神机惊鬼神，翻手定三分】—— 以凡夫之智，玩弄时代", tag: "insight" }, { text: "【不慕王侯不奉强，一身傲骨付江天】—— 独善其身，傲世凌风", tag: "indep" }, { text: "【破旧立新奠山河，威加海内定乾坤】—— 铁血枭雄，开创纪元", tag: "decide" }] },
+        { q: "终局血月当空，你在东汉滚滚江水边独行，手中紧握何物？", options: [{ text: "一柄饱饮仇敌之血却缺口累累的环首战刀", tag: "decide" }, { text: "一捆染有逃难孤儿指血的破烂民生竹简", tag: "duty" }, { text: "一支泛黄玉笛与半角尚温的陈年浊酒", tag: "indep" }, { text: "一份标满九州关隘险要与金矿的羊皮舆图", tag: "business" }] }
+    ];
+
+    // 14 大职业数据库（含专属重大转折编年史）
+    const ROLES_DATABASE = [
+        {
+            name: "豪门巨贾",
+            poem: "粮盐入海动九重，千金散尽还复来",
+            keyDims: ["business", "express"],
+            rating: "S · 富可敌国",
+            age: "享年 72 岁 · 锦衣玉食",
+            faction: "东吴 · 江东豪族",
+            danger: "财大招风 · 养肥待宰",
+            weapon: "【算盘打得冒烟的乌木算盘】+【缝满金叶子的特制避难内衬】",
+            modernSkill: "【战时大宗商品期货做空术】囤盐倒铁炒军粮，不费一兵一卒买下三座城池",
+            desc: "在别人为了城池拼死拼活时，你早早摸清了粮食、精铁和战马的底层脉络。在这个战火纷飞的年代，金钱与资源才是你真正的无形军队。",
+            deathWarning: "借给刘皇叔的粮草太多，皇叔打了胜仗后拍着你的肩膀管你叫干爹但就是不还钱",
+            chronicle: [
+                { year: "中平六年（21岁）", text: "洛阳火起，你携族人自洛阳弃宅，抢运蜀锦千匹走南阳，结识襄樊大贾，始立根基。" },
+                { year: "建安五年（32岁）", text: "官渡胶着，你以私盐万斛两头下注，暗助曹军辎重，亦遣海船通商江东，利逾十倍。" },
+                { year: "建安十三年（40岁）", text: "逃离广汉，举族迁至成都。刘璋据益州，你出巨资承办蜀道粮台，坐享半州铁冶。" },
+                { year: "黄初二年（53岁）", text: "魏吴互市，你垄断长江商道。孙权遣人求借军费，你称病谢客，暗中移资建业。" },
+                { year: "景初二年（72岁）", text: "大限将至，你独坐楼船泛舟太湖，命仆从将生平账册一炬焚之，含笑而逝。" }
+            ],
+            comments: [
+                { name: "鲁肃", text: "东吴府库若是亏空，肃第一个找阁下拆借，利息好商量！" },
+                { name: "董卓", text: "听说城南数你钱最多？来人啊，借这位先生的人头与家资一用！" }
+            ]
+        },
+        {
+            name: "乱世流民",
+            poem: "白骨露于野，千里无鸡鸣。生如草芥散，死作无名冢",
+            keyDims: ["indep", "empathy"],
+            rating: "D · 乱世薪柴",
+            age: "享年 21 岁 · 饥疫交加",
+            faction: "逃亡荒野 · 沟壑残命",
+            danger: "命如草芥 · 走慢一步即成刀下冤魂",
+            weapon: "【缺了豁口的破陶碗】+【嚼了三天的观音土泥丸】",
+            modernSkill: "【疯狂吃苦耐劳但毫无意义】每天步行四十里，依然抢不到官府施舍的一勺稀粥",
+            desc: "汉末最庞大亦最悲凉的底色。你没有神谋武勇，亦无宗族荫蔽，在诸侯割据的巨轮之下，你拼尽全力不过是为了在泥泞里多吸一口活命气。",
+            deathWarning: "逃难途中因为草鞋底磨穿，走慢了半步，被后方追赶战功的溃兵顺手割了首级冒功",
+            chronicle: [
+                { year: "中平元年（14岁）", text: "冀州大蝗，黄巾掠县，茅舍遭焚。父母死于乱兵，你随流亡人潮一路乞食向南。" },
+                { year: "初平三年（19岁）", text: "中原大饥，白骨蔽野。为夺路旁半枚发霉麦饼，你被军卒长槊击裂右胛，伏草独泣。" },
+                { year: "建安元年（21岁）", text: "曹操大军扫荡两淮，溃骑过野。你避之不及，毙于乱蹄之下，暴尸荒野，史书无载。" }
+            ],
+            comments: [
+                { name: "曹操", text: "‘白骨蔽平原，孤赋《蒿里行》，写的便是阁下这一世吧……哀哉。’" },
+                { name: "董卓", text: "城外又有流民啸聚？西凉骑兵何在，全数踏作肉泥便是！" }
+            ]
+        },
+        {
+            name: "屯田佃农",
+            poem: "晨兴理荒秽，带月荷锄归。岁岁输官租，不知谁天子",
+            keyDims: ["duty", "business"],
+            rating: "C · 帝国基石",
+            age: "享年 39 岁 · 积劳成疾",
+            faction: "曹魏许下屯田营",
+            danger: "军粮告急 · 动辄借尔全家存粮一用",
+            weapon: "【磨秃了刃的生铁锄】+【官府发下的半袋发霉陈谷种】",
+            modernSkill: "【无情耕作机器】每日上缴六成收成，硬生生替曹丞相耕出了官渡之战的大半军粮",
+            desc: "乱世中最沉默的筑基者。大军征战杀伐，全仰仗你在盐碱荒野流干最后一滴汗。你不知何谓三分天下，只知误了春耕便要被皮鞭抽死。",
+            deathWarning: "官渡决战前夕军粮耗尽，督粮官强征你全家仅剩的保命冬粮，熬不过开春活活冻馁而亡",
+            chronicle: [
+                { year: "中平六年（16岁）", text: "家乡沦为战场，你被许下典农官强编为‘屯田客’，于颍水荒滩筑堤垦荒。" },
+                { year: "建安五年（27岁）", text: "官渡血战，官府征粮七成。你日夜于泥浆耕作，腰背佝偻如弓，勉保妻儿苟活。" },
+                { year: "建安十七年（39岁）", text: "春寒大疫，带病强支犁铧倒于垄沟，手握一把湿泥长绝，终生未踏出屯田所三十里。" }
+            ],
+            comments: [
+                { name: "荀彧", text: "若无万千如先生这般的农客，官渡安有大捷？汉家亏欠先生一口饱饭。" },
+                { name: "刘备", text: "备见耕农面如菜色，痛彻心扉……然军粮之事，还请先生多担待。" }
+            ]
+        },
+        {
+            name: "奇谋策士",
+            poem: "算尽天机留一着，运筹帷幄定乾坤",
+            keyDims: ["insight", "decide"],
+            rating: "SSS · 逆天改命",
+            age: "享年 63 岁 · 幕后元勋",
+            faction: "曹魏 · 唯才是举",
+            danger: "算尽机关 · 多谋早衰招忌",
+            weapon: "【看似高深的白羽扇】+【防主公疑心专用速效救心丸】",
+            modernSkill: "【Excel 表格精算平账法】把前线军粮亏空算得天衣无缝，荀彧看了都直呼内行",
+            desc: "你拥有冷酷而精确的战略眼光。你从不迷信虚妄的口号，总能在万千乱局中一眼洞穿敌军最大的破绽与死穴。天下是你博弈的棋盘。",
+            deathWarning: "在官渡前线帮主公算无遗策，结果因算得太准让主公夜里睡不着觉，引来杀身之祸",
+            chronicle: [
+                { year: "初平元年（23岁）", text: "见董卓入京倒行逆施，知洛阳必毁，连夜策动族人潜逃颖川，入水镜书院闭门苦读。" },
+                { year: "建安二年（30岁）", text: "单骑赴许都，呈《十胜十败策》，曹公执手长叹‘使孤成大业者，必此人也’。" },
+                { year: "建安五年（33岁）", text: "官渡决战，料定许攸必叛、乌巢必虚，密谏曹操轻骑夜袭，一战定北方乾坤。" },
+                { year: "建安十三年（41岁）", text: "赤壁风起，你洞烛周瑜火攻之谋，托疾辞归故里，避开华容道之惨败。" },
+                { year: "黄初四年（63岁）", text: "文帝曹丕欲伐吴，你上表力谏天时未至。是夜灯下翻看旧图，伏案溘然长逝。" }
+            ],
+            comments: [
+                { name: "曹操", text: "天下之智，唯卿与孤耳！……等等，你刚才看孤的眼神是什么意思？（摸胡子起疑心）" },
+                { name: "诸葛亮", text: "亮本以为隆中对已算无遗策，阁下这一手弃子抢先，妙极，妙极。" }
+            ]
+        },
+        {
+            name: "百战名将",
+            poem: "黄沙百战穿金甲，长枪破阵退千军",
+            keyDims: ["duty", "decide"],
+            rating: "SS · 威震华夏",
+            age: "享年 58 岁 · 列土封疆",
+            faction: "蜀汉 · 铁血义胆",
+            danger: "战场无眼 · 明枪易躲暗箭难防",
+            weapon: "【八十八斤玄铁长枪】+【随时替主公挡冷箭的加厚护心镜】",
+            modernSkill: "【现代步坦协同与特种空降理论】虽然没有坦克，但把骑兵穿插玩到了极致",
+            desc: "你依靠令人信服的勇武与杀伐决断立足。无论面对怎样悬殊的逆风局，只要战旗不倒，你就是全军上下最硬的一根脊梁骨。",
+            deathWarning: "在城楼上豪气干云大喊‘谁敢杀我’，背后突然飞来一支冷箭",
+            chronicle: [
+                { year: "中平五年（17岁）", text: "投身北军中候，持槊讨黄巾，身被三创斩将夺旗，名噪行伍。" },
+                { year: "建安十三年（37岁）", text: "长坂坡兵溃，你率残骑二十扼守长桥，断桥逼退曹军虎豹骑，护得幼主周全。" },
+                { year: "建安二十四年（48岁）", text: "拔襄阳，水淹七军，威震华夏，曹公欲迁都以避其锐气。" },
+                { year: "章武二年（51岁）", text: "夷陵大火，你冒死引断后营拼死结阵，力保昭烈帝突入白帝城。" },
+                { year: "建兴六年（58岁）", text: "随武侯出斜谷，白发披甲单枪刺落敌将，因旧伤崩裂，马革裹尸还。" }
+            ],
+            comments: [
+                { name: "张辽", text: "合肥逍遥津一役，若有阁下为副将，江东小儿连夜都睡不着觉。" },
+                { name: "张飞", text: "好汉子！改日并肩杀敌，杀完去俺桃园大口吃肉大碗喝酒！" }
+            ]
+        },
+        {
+            name: "乱世枭雄",
+            poem: "宁教我负天下人，休教天下人负我",
+            keyDims: ["innovate", "duty"],
+            rating: "SSS · 问鼎天下",
+            age: "享年 66 岁 · 霸业千秋",
+            faction: "自立诸侯 · 逐鹿中原",
+            danger: "多疑善猜 · 高处不胜寒",
+            weapon: "【倚天剑雌雄对】+【半夜防刺客专用假寐眼罩】",
+            modernSkill: "【现代创业狼性文化画饼术】‘三年平定中原，五年纳斯达克敲钟’，部下听得热血沸腾",
+            desc: "你拥有极强的野心与重构秩序的魄力。规矩对你而言只是束缚凡人的工具，你天生带着聚拢豪杰的气场，誓要在破败的汉末重新划定山河。",
+            deathWarning: "多嘴怀疑前来治病的华佗大夫，头风发作时无医可用痛哭流涕",
+            chronicle: [
+                { year: "中平六年（26岁）", text: "散尽家资于陈留起兵，手斩董卓追兵，誓言‘若天道无常，便由我来立规矩’。" },
+                { year: "建安元年（33岁）", text: "奉天子以令诸侯，定都许县，开屯田之策，聚天下亡命寒士。" },
+                { year: "建安十三年（45岁）", text: "一统北方，横槊赋诗，虽赤壁受挫，然基业固若金汤。" },
+                { year: "建安二十五年（57岁）", text: "封魏王，加九锡，进冕十有二旒，朝野侧目，终不称帝留待后人。" },
+                { year: "黄初元年（66岁）", text: "弥留之际，命分香卖履，眷恋侍妾，长叹‘天下若无孤，不知几人称王’。" }
+            ],
+            comments: [
+                { name: "曹操", text: "生子当如孙仲谋，寻谋当如阁下……不对，你怎敢用孤的口吻跟孤说话？！" },
+                { name: "刘备", text: "先生有吞吐天地之志，备愿携二弟三弟随先生匡扶汉室！" }
+            ]
+        },
+        {
+            name: "江湖侠刺",
+            poem: "事了拂衣长啸去，十步一人不留行",
+            keyDims: ["indep", "decide"],
+            rating: "A+ · 独行惊鸿",
+            age: "享年 46 岁 · 快意恩仇",
+            faction: "在野江湖 · 天地游走",
+            danger: "单兵难敌重兵 · 易陷死地",
+            weapon: "【淬毒玄铁匕首】+【见势不妙撒腿就跑专用防滑草鞋】",
+            modernSkill: "【现代跑酷与烟雾隐身术】飞檐走壁如入无人之境，大将军守卫愣是抓不住衣角",
+            desc: "世俗礼法与庙堂规矩于你如浮云。你信奉刀锋之下的绝对公道，凭一手绝伦身手游走于乱世黑白之间，千军万马难留你一道身影。",
+            deathWarning: "因看不惯某太守欺男霸女夜潜刺杀，撤退时被巡夜猎犬狂吠暴露被围",
+            chronicle: [
+                { year: "光和六年（18岁）", text: "为报乡党之仇，白日椎杀恶吏于市，披发涂炭而逃，亡命江湖。" },
+                { year: "兴平二年（30岁）", text: "夜入徐州杀曹军屠民牙将三人，割其耳，留字‘杀人者荆襄客’。" },
+                { year: "建安十三年（43岁）", text: "受托刺杀江东主和降将，于乌林乱营飞檐斩杀敌将，引弓破围而出。" },
+                { year: "建安十六年（46岁）", text: "刺杀凉州叛军首领受困，身中十八创，力竭倚断壁大笑绝气。" }
+            ],
+            comments: [
+                { name: "徐庶", text: "同道中人！当年某若不是刺了恶霸，也不会弃剑学文。" },
+                { name: "吕布", text: "鼠辈安敢在辕门外偷窥！吃布一戟……咦，人呢？" }
+            ]
+        },
+        {
+            name: "世家能臣",
+            poem: "风波不动安如山，进退有度理万机",
+            keyDims: ["insight", "business"],
+            rating: "S · 青史留名",
+            age: "享年 75 岁 · 寿终正寝",
+            faction: "曹魏 / 蜀汉中枢",
+            danger: "过于求稳 · 积劳成疾",
+            weapon: "【盖满各部尚书大印的批文】+【老花镜与提神醒脑人参膏】",
+            modernSkill: "【现代 KPI 与九品中正制混合双打】把群臣考核治得服服帖帖，无人敢摸鱼",
+            desc: "你深谙组织运转的底层代码与官场博弈的微妙平衡。不论台上城头变换何样大旗，新君坐天下时，永远需要仰仗你这样的人治理四方。",
+            deathWarning: "给主公批阅了一辈子公文粮册，活活累死在书房案牍堆里",
+            chronicle: [
+                { year: "初平三年（25岁）", text: "举孝廉，入尚书台为郎，战乱中冒死抢出洛阳图籍户册千卷。" },
+                { year: "建安九年（38岁）", text: "曹操定邺城，你出任治中从事，核定冀州户籍，清丈田亩，民赖以安。" },
+                { year: "延康元年（53岁）", text: "参与草创‘九品中正制’，奠定魏晋门阀升迁之基，百官凛然。" },
+                { year: "景初元年（75岁）", text: "历仕魏三朝，封司空，位极人臣，病榻上犹在核验边关屯田粮册。" }
+            ],
+            comments: [
+                { name: "陈群", text: "阁下制定的制度，哪怕改朝换代两百年，天下诸州依然受用。" },
+                { name: "祢衡", text: "整日只知奉迎案牍，俗吏！……不过你拟的这份公文确实挑不出毛病。" }
+            ]
+        },
+        {
+            name: "风骨文士",
+            poem: "笔落惊风落大木，胸有浩气吐千虹",
+            keyDims: ["express", "indep"],
+            rating: "A · 名垂青史",
+            age: "享年 49 岁 · 浩气长存",
+            faction: "清流世族 · 赋咏天下",
+            danger: "言辞犀利 · 极易因言获罪",
+            weapon: "【紫毫狼毫狼毫笔】+【怼人不带脏字的万字檄文草稿】",
+            modernSkill: "【10w+ 爆款文案自媒体爆击术】一篇讨贼檄文，直接把敌酋的气胸和头风全气出来了",
+            desc: "你是乱世之中少有的文明火种。你敢于用手中的毫毛竹简与无常的暴力叫板，你的文章是投向残暴者的利箭，天下学子视你为精神灯塔。",
+            deathWarning: "酒席上喝高了作打油诗讽刺大将军心眼小，第二天醒来发现已被收押在天牢",
+            chronicle: [
+                { year: "中平四年（18岁）", text: "作《伤时赋》痛陈宦官专权，天下学子争相传抄，洛阳纸贵。" },
+                { year: "建安五年（31岁）", text: "于袁绍帐下掌书记，起草讨曹檄文，词锋凌厉，曹公读毕惊出一身冷汗。" },
+                { year: "建安十三年（39岁）", text: "归邺城入建安七子之列，与曹植夜饮铜雀台，诗酒流连，傲骨不折。" },
+                { year: "建安二十三年（49岁）", text: "因直言讽谏魏王严刑峻法，触怒天威下狱，坐化前索笔作绝命诗一章。" }
+            ],
+            comments: [
+                { name: "陈琳", text: "好文笔！当年某写檄文曹公尚头愈，读了阁下的文章，曹公直接从床上跳起来了！" },
+                { name: "曹丕", text: "先生文章极佳，但为何偏偏写在典论的序言里讽刺寡人？（暗暗记小本本）" }
+            ]
+        },
+        {
+            name: "绝代名医",
+            poem: "悬壶济世抚创痍，白骨生肌活万灵",
+            keyDims: ["empathy", "indep"],
+            rating: "SS · 功德无量",
+            age: "享年 71 岁 · 万民共仰",
+            faction: "中立四海 · 救死扶伤",
+            danger: "知晓权贵隐疾 · 极易被灭口",
+            weapon: "【浸透麻沸散的金针】+【遇到曹公头风立刻装聋作哑的免死假条】",
+            modernSkill: "【现代无菌消毒与急救止血包扎法】战场伤残存活率直接被你拉高了八个百分点",
+            desc: "在杀伐不断的东汉末年，唯有你带来了生命与温情。无论是诸侯大将还是田间黔首，面对你的银针与药汤，都必须放下兵器尊称先生。",
+            deathWarning: "提议给某位多疑的主公做开颅小手术，直接被以大不敬谋逆罪收押",
+            chronicle: [
+                { year: "光和七年（15岁）", text: "见疫病横行满城哀号，立誓学医，随山中草医尝尽深谷毒草。" },
+                { year: "建安三年（32岁）", text: "于徐州前线推广‘煮沸净水、石灰掩埋’之法，救治伤卒数万。" },
+                { year: "建安二十四年（53岁）", text: "赴襄阳为关将军刮骨疗毒，血流盈盘而笑语自若，先生神术名震九州。" },
+                { year: "正始二年（71岁）", text: "将毕生医案撰为《伤寒金匮》，私授关门弟子，于深山药庐中合目而逝。" }
+            ],
+            comments: [
+                { name: "华佗", text: "妙啊！阁下这套‘外科清创法’，老夫愿以《青囊书》全本相授交换！" },
+                { name: "关羽", text: "先生尽管刮骨疗毒，某与马良下棋正到妙处，连眉头都不皱一下！" }
+            ]
+        },
+        {
+            name: "工造巧匠",
+            poem: "巧夺天工化飞羽，连弩穿云定塞川",
+            keyDims: ["innovate", "indep"],
+            rating: "S · 经世利器",
+            age: "享年 69 岁 · 独树一帜",
+            faction: "蜀汉工部 / 地方机密营",
+            danger: "身负神机绝密 · 遭军阀软禁",
+            weapon: "【连发无声诸葛连弩】+【多功能折叠鲁班尺与万用螺丝刀】",
+            modernSkill: "【机械齿轮动力与模块化工程学】别人攻城靠死人堆，你用投石机直接实现精准降维打击",
+            desc: "你走的是纯粹的技术极客路线。从水转百戏到连发神弩，别人依赖血肉堆砌胜利，你则用超前的智慧与机械齿轮悄然改写战争胜负。",
+            deathWarning: "发明的守城神机太好用，主公怕你跳槽敌国直接封为国宝软禁三十年",
+            chronicle: [
+                { year: "初平二年（21岁）", text: "改进翻车与水磨，一人汲水可灌田百亩，乡人惊为神工。" },
+                { year: "建安十二年（37岁）", text: "入襄阳机巧营，研制‘三段连射神弩’，诸葛武侯登门拜访促膝长谈。" },
+                { year: "建兴五年（58岁）", text: "主持打造‘木牛流马’与模块浮桥，翻越剑阁栈道如履平地。" },
+                { year: "景耀元年（69岁）", text: "闭户打造精巧指南车，工成之日，抚摩机括微笑坐化。" }
+            ],
+            comments: [
+                { name: "黄月英", text: "夫君总夸他的木牛流马，依我看，阁下的齿轮传动比他巧上百倍。" },
+                { name: "马钧", text: "甚……甚善！天下之巧，工部有……有先生足矣！" }
+            ]
+        },
+        {
+            name: "方外隐士",
+            poem: "结庐幽谷抱琴卧，静看人间几度秋",
+            keyDims: ["indep", "insight"],
+            rating: "S · 超然脱俗",
+            age: "享年 82 岁 · 仙风道骨",
+            faction: "水镜庄 / 鹿门山",
+            danger: "乱兵毁庐 · 隐世难全",
+            weapon: "【七弦古琴】+【后门直通深山老林的逃跑滑草板】",
+            modernSkill: "【现代气象预报与天文占卜伪装】看一眼晚霞就知道明天暴雨，被诸侯尊为天人",
+            desc: "你早已看穿了汉末杀戮与王朝更替的必然宿命。你隐居于深山水畔煮雪烹茶，帝王拜访亦不过得你淡然一笑，是乱世中活得最自洽之人。",
+            deathWarning: "假装不在家避开刘使君第三次登门拜访，结果在后院烤红薯香味飘到了草庐外",
+            chronicle: [
+                { year: "中平元年（23岁）", text: "辞朝廷茂才之辟，遁入南阳幽林结草而居，琴声夜夜荡于白河之上。" },
+                { year: "建安六年（40岁）", text: "刘备两次过访，你闭门扫径装睡，留童子答以‘先生采药去矣’。" },
+                { year: "黄初四年（62岁）", text: "中原初定，魏主征召为三老，你留绝命书潜渡武陵桃源，不知所踪。" },
+                { year: "甘露三年（82岁）", text: "樵夫于终南绝巅见白鹤绕阁，先生抱琴长笑，化清风而去。" }
+            ],
+            comments: [
+                { name: "司马徽", text: "好！好！好！阁下才是真正的得道之人，老朽自愧弗如。" },
+                { name: "刘备", text: "备已在草庐门外冒雪等了五个时辰，不知先生今日可曾午睡醒来？" }
+            ]
+        },
+        {
+            name: "纵横说客",
+            poem: "三寸舌胜百万兵，谈笑连横退万敌",
+            keyDims: ["express", "empathy"],
+            rating: "A+ · 巧舌如簧",
+            age: "享年 59 岁 · 游刃有余",
+            faction: "各阵营特使鸿胪",
+            danger: "阵前斩使 · 随时被下油锅",
+            weapon: "【抹了蜜的三寸不烂之舌】+【连夜涂满润滑油随时开溜的马车】",
+            modernSkill: "【现代非暴力沟通与心理防线拆解】硬是把敌阵偏将说得抱头痛哭，当场倒戈投诚",
+            desc: "你擅长在看似不可逾越的人心鸿沟上架桥。你的武器就是言语与共情，两军兵临城下之际，你单骑入营便能凭借洞悉利害让敌军罢兵言和。",
+            deathWarning: "前去劝降敌营时言辞过于嚣张，敌方主帅今天刚好心情不好直接下令油锅伺候",
+            chronicle: [
+                { year: "兴平元年（21岁）", text: "单骑赴反贼张飞大营，说以唇亡齿寒，使徐州三镇化干戈为玉帛。" },
+                { year: "建安十三年（35岁）", text: "随诸葛孔明过江，舌战江东群儒，为孙刘合纵抗曹立下首功。" },
+                { year: "建安十九年（41岁）", text: "入成都劝降刘璋，于城头剖白兴亡利害，全蜀四十一州官民免遭兵燹。" },
+                { year: "黄初四年（59岁）", text: "以使节之姿最后一次泛舟东吴，饮酒大醉，笑谈人间大势，卒于舟中。" }
+            ],
+            comments: [
+                { name: "简雍", text: "哈哈！同榻而卧促膝长谈，阁下这套套近乎的本事，比简某还赖皮！" },
+                { name: "张飞", text: "你这厮说话绕来绕去，俺听得头大！要是敢骗俺哥哥，一矛刺你透明窟窿！" }
+            ]
+        },
+        {
+            name: "坞堡豪强",
+            poem: "结寨安民筑铜壁，自成乾坤避烽烟",
+            keyDims: ["business", "duty"],
+            rating: "S · 一方砥柱",
+            age: "享年 76 岁 · 儿孙满堂",
+            faction: "地方豪强自治",
+            danger: "粮草太香 · 易引大军围剿",
+            weapon: "【高筑三十尺带倒刺城墙】+【地窖里够吃十年的陈年腊肉和老谷】",
+            modernSkill: "【现代仓储供应链管理与民兵网格化】在自家一亩三分地搞内循环，比州牧还滋润",
+            desc: "你不做争夺天下的虚幻美梦，只抓最实在的土地与乡党。高筑坞堡、广积存粮，在生灵涂炭的乱世里，你亲手给亲族撑起了一座坚不可摧的庇护所。",
+            deathWarning: "坞堡里屯的粮食太香名声在外，引得曹刘孙三家打仗打到一半同时拐过来借粮",
+            chronicle: [
+                { year: "中平五年（24岁）", text: "黄巾大作，你聚宗族千人依险筑堡，修城门置箭楼，威震乡里。" },
+                { year: "初平三年（31岁）", text: "李傕郭汜残兵掠境，攻堡三月不下，被你设伏斩杀先锋，自此诸军绕道。" },
+                { year: "建安十二年（46岁）", text: "曹操定北方，亲赐金印招抚，你遣子入侍许都，保坞堡百年自治税赋不入。" },
+                { year: "泰始二年（76岁）", text: "晋代魏立，你坐于坞堡内堂见四世儿孙环绕，笑对乱世长终。" }
+            ],
+            comments: [
+                { name: "许褚", text: "当年俺在葛陂也是这般聚族自保，老兄你这坞墙修得比俺当年还结实！" },
+                { name: "李典", text: "天下乱任它乱，有粮有兵有高墙，宗族安泰才是真豪杰。" }
+            ]
+        }
+    ];
+
+
+    const ROLE_TAGLINES = {
+        "豪门巨贾": "资源操盘者 · 乱世财神",
+        "乱世流民": "无名求生者 · 史书之外的人",
+        "屯田佃农": "帝国基石 · 沉默的负重者",
+        "奇谋策士": "深谋破局者 · 幕后定乾坤",
+        "百战名将": "铁血统帅 · 战阵定生死",
+        "乱世枭雄": "秩序重构者 · 天生掌局人",
+        "江湖侠刺": "独行快意客 · 刀锋守公道",
+        "世家能臣": "制度经营者 · 中枢定盘星",
+        "风骨文士": "乱世执笔人 · 文章作兵刃",
+        "绝代名医": "悬壶救命者 · 乱世活菩萨",
+        "工造巧匠": "技术破局者 · 机关改战局",
+        "方外隐士": "清醒旁观者 · 不入局中局",
+        "纵横说客": "人心谈判家 · 三寸舌退兵",
+        "坞堡豪强": "地方守成者 · 一堡护乡里"
+    };
+
+    const ROLE_VISUALS = {
+        "乱世枭雄": { image: "./assets/role-power.jpg", pos: "center 43%" },
+        "百战名将": { image: "./assets/role-power.jpg", pos: "center 52%" },
+        "奇谋策士": { image: "./assets/role-power.jpg", pos: "center 37%" },
+        "世家能臣": { image: "./assets/role-power.jpg", pos: "center 39%" },
+        "豪门巨贾": { image: "./assets/role-resource.jpg", pos: "center 44%" },
+        "坞堡豪强": { image: "./assets/role-resource.jpg", pos: "center 38%" },
+        "屯田佃农": { image: "./assets/role-resource.jpg", pos: "center 56%" },
+        "江湖侠刺": { image: "./assets/role-wanderer.jpg", pos: "center 45%" },
+        "方外隐士": { image: "./assets/role-wanderer.jpg", pos: "center 34%" },
+        "风骨文士": { image: "./assets/role-civilization.jpg", pos: "center 44%" },
+        "绝代名医": { image: "./assets/role-civilization.jpg", pos: "center 48%" },
+        "工造巧匠": { image: "./assets/role-civilization.jpg", pos: "center 51%" },
+        "纵横说客": { image: "./assets/role-diplomat.jpg", pos: "center 43%" },
+        "乱世流民": { image: "./assets/role-refugee.jpg", pos: "center 48%" }
+    };
+
+    const EVENT_SCENES = {
+        war: "./assets/event-war.jpg",
+        refugee: "./assets/event-refugee.jpg",
+        resource: "./assets/event-resource.jpg",
+        wild: "./assets/event-wild.jpg",
+        craft: "./assets/event-craft.jpg",
+        diplomacy: "./assets/event-diplomacy.jpg",
+        power: "./assets/event-power.jpg",
+        city: "./assets/event-city.jpg"
+    };
+
+    function sceneForQuestion(text) {
+        if (/粮|仓|商|市集|屯田|赋税|盐|铁矿|军需|粮霸|田亩/.test(text)) return EVENT_SCENES.resource;
+        if (/荒山|荒原|峡谷|山洪|深山|绝壁|毒虫|大漠|草庐|隐|星斗/.test(text)) return EVENT_SCENES.wild;
+        if (/华佗|医|疫|冶铁|机关|古谱|残简|水渠|硝石|工坊|攻城机关/.test(text)) return EVENT_SCENES.craft;
+        if (/出使|劝|使者|鸿门宴|会盟|谈判|檄文|舌战|言和|密信/.test(text)) return EVENT_SCENES.diplomacy;
+        if (/主公|朝廷|皇|宫|称帝|封赏|托孤|九品|袁绍|曹操|孙伯符|国舅|新帝/.test(text)) return EVENT_SCENES.power;
+        if (/流民|难民|饥|屠村|幼童|百姓|大旱|逃荒|妇孺|迁长安/.test(text)) return EVENT_SCENES.refugee;
+        if (/洛阳|城守|城门|城中|孤城|关隘|府库|火海|屠城/.test(text)) return EVENT_SCENES.city;
+        return EVENT_SCENES.war;
+    }
+
+    const LIFE_ALT_ROUTES = {
+        "豪门巨贾": [
+            [
+                { year: "中平六年（21岁）", text: "你避开洛阳兵火，带着几车盐布南下荆襄，从军需缺口里赚到第一桶金。" },
+                { year: "建安五年（32岁）", text: "官渡相持，你不赌胜负，只控制渡口、骡马与仓储，谁赢都得向你买粮。" },
+                { year: "建安二十年（47岁）", text: "你把家产拆成数支商号分散三地，从此诸侯更替而账本不倒。" },
+                { year: "景初二年（72岁）", text: "你在江上楼船中寿终，留下的不是爵位，而是一张横跨九州的商路网。" }
+            ],
+            [
+                { year: "初平元年（20岁）", text: "你从倒卖逃难豪族的宅契起家，很快发现乱世真正值钱的是运输而不是珠玉。" },
+                { year: "建安七年（34岁）", text: "你投资修复一条废弃驿路，以过路粮秣换来地方军阀的保护。" },
+                { year: "黄初元年（53岁）", text: "魏吴交恶时你反而开出中立商栈，替双方交换药材、马匹与布帛。" },
+                { year: "景初二年（72岁）", text: "晚年你烧掉最敏感的账册，把产业分给子侄，笑称生意比王朝长命。" }
+            ],
+            [
+                { year: "中平五年（19岁）", text: "家道中落，你靠替军营算账活命，第一次知道一袋粮能左右百人死生。" },
+                { year: "兴平二年（27岁）", text: "你囤积荒年谷物却在最危急时平价放粮，因此同时得到百姓与豪族的人情。" },
+                { year: "建安十五年（47岁）", text: "你主动退出最危险的军需买卖，把财富转成田庄、船队和族学。" },
+                { year: "景初二年（72岁）", text: "你在儿孙环绕中离世，留下遗训：乱世最贵的不是金，是能把金换成命的渠道。" }
+            ]
+        ],
+        "乱世流民": [
+            [
+                { year: "中平二年（15岁）", text: "大旱三月，井泉皆涸。你跟着乡民沿官道向荆州逃荒，靠树皮草根续命。" },
+                { year: "初平元年（20岁）", text: "洛阳迁都，难民潮挤满驿道。你替豪族赶车换得一口粗粮，勉强活过寒冬。" },
+                { year: "建安元年（21岁）", text: "一次夜逃中你被溃兵冲散，倒在荒亭外。没人知道你的姓名。" }
+            ],
+            [
+                { year: "光和七年（13岁）", text: "乡里疫病横行，你与妹妹被迫离家，一路替人抬尸换粥。" },
+                { year: "兴平二年（19岁）", text: "你进入流民聚落，靠修补草鞋和挑水谋生，第一次有了能遮雨的破棚。" },
+                { year: "建安元年（21岁）", text: "军营恶疫蔓延，你染病七日，埋在城外乱坟岗，没有碑，也没有祭。" }
+            ],
+            [
+                { year: "中平六年（16岁）", text: "家乡被兵火烧尽，你随族人流亡兖州，被屯田营收编。" },
+                { year: "建安元年（21岁）", text: "你熬过饥荒与兵灾，娶了同营逃难女子。你没有成为英雄，却终于不再逃。" },
+                { year: "尾声", text: "这一条命途比史书短得多：乱世没有给你功名，只给了你活下来的机会。" }
+            ]
+        ],
+        "屯田佃农": [
+            [
+                { year: "中平六年（16岁）", text: "你被收编为屯田客，在颍水荒滩垦田，第一年就学会了如何在军令与天灾间保住种子。" },
+                { year: "建安五年（27岁）", text: "官渡军粮吃紧，你被调去管理十余户农客，第一次从挥锄变成管粮。" },
+                { year: "建安十七年（39岁）", text: "积劳成疾，你倒在春耕地头，身后那片田仍按时送粮前线。" }
+            ],
+            [
+                { year: "初平二年（18岁）", text: "你随难民进入许下，被编入屯田。别人想着逃，你先修渠、藏种、算收成。" },
+                { year: "建安九年（31岁）", text: "你因懂账与农时被典农官看中，成为小吏，替数百农户争下一成口粮。" },
+                { year: "建安十七年（39岁）", text: "一场疫病夺去性命，乡人自发为你立了块不起眼的木牌。" }
+            ],
+            [
+                { year: "中平五年（15岁）", text: "父兄死于兵乱，你守着两亩薄田不肯离开，直到军队强征全村。" },
+                { year: "建安四年（26岁）", text: "你靠耐心与算计把一家人的口粮藏过数轮征发，渐成乡里最会过日子的人。" },
+                { year: "建安十七年（39岁）", text: "寒冬里旧疾复发。你没见过天下统一，却亲手把三个孩子送到成年。" }
+            ]
+        ],
+        "奇谋策士": [
+            [
+                { year: "初平元年（23岁）", text: "你先投袁营，几次进策皆被搁置，于是把未被采纳的方案全记在竹简上。" },
+                { year: "建安五年（33岁）", text: "官渡前夜你带着旧简改投曹营，一夜之间从弃子变成座上宾。" },
+                { year: "建安十三年（41岁）", text: "你预判南征风险，称病留守后方，因此躲过赤壁惨败。" },
+                { year: "黄初四年（63岁）", text: "你在书房中寿终，桌上最后一页仍写着尚未发生的三条后患。" }
+            ],
+            [
+                { year: "初平三年（25岁）", text: "你游历荆州，靠替地方豪强调停争地声名鹊起，却始终不肯轻易认主。" },
+                { year: "建安六年（33岁）", text: "你以一封长策换来曹营信任，专门负责别人不愿碰的残局。" },
+                { year: "建安二十二年（49岁）", text: "你察觉新旧权力交替，主动交出兵权，只保留议政席位。" },
+                { year: "黄初四年（63岁）", text: "你比许多锋芒更盛的同僚活得久，只因为从不把最后一张牌摆在桌上。" }
+            ],
+            [
+                { year: "中平六年（20岁）", text: "你在逃难途中替一支溃军设计脱围，由此被带入幕府。" },
+                { year: "建安二年（31岁）", text: "你不以奇策出名，而以每次都比别人多算两步著称。" },
+                { year: "建安十八年（47岁）", text: "主公开始猜忌你的洞察，你索性自请外放，远离中枢杀机。" },
+                { year: "黄初四年（63岁）", text: "晚年你只教门生一件事：好谋不是算得多，而是知道何时不再算。" }
+            ]
+        ],
+        "百战名将": [
+            [
+                { year: "中平五年（17岁）", text: "你从乡勇入伍，第一战就因敢在溃阵中回头救旗而被记住。" },
+                { year: "建安五年（32岁）", text: "你以少数骑兵穿插敌后，断粮三日，逼得数倍敌军撤围。" },
+                { year: "建安二十四年（51岁）", text: "你已白发披甲，却仍亲临最危险的城头，因为部下只在看见你时才肯死守。" },
+                { year: "建兴六年（58岁）", text: "旧伤崩裂，你在营中去世。军中没有哭声，只把你的战旗整夜立在风里。" }
+            ],
+            [
+                { year: "初平元年（19岁）", text: "你在边郡练成骑战本领，乱世一开便从守卒变成带队校尉。" },
+                { year: "建安十三年（38岁）", text: "水陆混战中你主动断后，保住全军主力，自此威名远播。" },
+                { year: "建安二十二年（47岁）", text: "主公赐你一郡，你却把大半赏赐分给伤残老卒。" },
+                { year: "建兴六年（58岁）", text: "你最后一次出征没有战死，而是在回营途中安静倒在马上。" }
+            ],
+            [
+                { year: "中平六年（18岁）", text: "你因家仇投军，本只想报仇，却很快发现几千人的命比个人恩怨更重。" },
+                { year: "建安十年（37岁）", text: "你开始以稳著称，不再追求每一场都赢，而是让部下尽量活着回来。" },
+                { year: "建安二十四年（51岁）", text: "你拒绝一次必败的军令，几乎被斩，却最终因结果证明了判断。" },
+                { year: "建兴六年（58岁）", text: "死后军中评价你：未必最勇，却是最值得把背后交出去的人。" }
+            ]
+        ],
+        "乱世枭雄": [
+            [
+                { year: "初平元年（24岁）", text: "你依附地方豪强起兵讨董，凭敢赌敢杀迅速吞并周边小部曲。" },
+                { year: "兴平二年（31岁）", text: "趁两大诸侯相争，你奇袭空虚腹地，一战夺下三郡，自立为州牧。" },
+                { year: "建安十二年（43岁）", text: "你与昔日盟友决裂，以三年苦战换来半壁江山，麾下文武如云。" },
+                { year: "黄初元年（66岁）", text: "你死于寝殿，身后诸子争位。天下承认你是枭雄，也开始瓜分你的遗产。" }
+            ],
+            [
+                { year: "中平五年（22岁）", text: "你先结交商旅、游侠与失意士人，暗中织成自己的网络。" },
+                { year: "初平四年（29岁）", text: "借一次大饥收拢流民数万，筑坞屯粮，从地方自保走向割据。" },
+                { year: "建安十九年（50岁）", text: "三家争霸时你突然倒向弱者，以一次精准下注换得大片土地。" },
+                { year: "黄初元年（66岁）", text: "你在府中善终，临终前烧掉密信，只留一句：天下从无永远的朋友。" }
+            ],
+            [
+                { year: "光和七年（20岁）", text: "你亲眼看见黄巾破城，从此相信善意若无力量保护，只会更快消失。" },
+                { year: "初平二年（27岁）", text: "你起兵后严禁掠民，以铁律整军。百姓惧你，也愿意在你的地盘种地。" },
+                { year: "建安十七年（48岁）", text: "你主动止兵，与强邻划界，从争天下转向修渠、开学、编户。" },
+                { year: "黄初元年（66岁）", text: "你没有称帝。死后百姓立祠，史官仍争论你究竟是枭雄还是能臣。" }
+            ]
+        ],
+        "江湖侠刺": [
+            [
+                { year: "光和六年（18岁）", text: "你为乡党报仇后亡命江湖，从此只在夜里进城。" },
+                { year: "兴平二年（30岁）", text: "你受托刺杀屠民牙将，得手后却放走其年幼家眷，因此名声两极。" },
+                { year: "建安十六年（46岁）", text: "你最后一次出手是替旧友报仇，身中数创后消失在山雨里，再无人见过。" }
+            ],
+            [
+                { year: "中平六年（19岁）", text: "你不愿投军，靠护送商旅与难民穿过战区换取盘缠。" },
+                { year: "建安八年（36岁）", text: "你因救下一名被追杀的谋士卷入大局，却始终拒绝官职。" },
+                { year: "建安十六年（46岁）", text: "你在一次护送孤儿出关时负伤而亡，墓碑只刻了一个‘侠’字。" }
+            ],
+            [
+                { year: "初平元年（22岁）", text: "你靠一柄短刀替乡里除恶，名声传开后，各方都想买你的刀。" },
+                { year: "建安十二年（42岁）", text: "你开始厌倦杀人，只接护送与救人的委托。" },
+                { year: "建安十六年（46岁）", text: "晚年未至，你却提前归隐。有人说你死了，也有人说在南山见过你饮酒。" }
+            ]
+        ],
+        "世家能臣": [
+            [
+                { year: "初平三年（25岁）", text: "你冒着兵火抢救户籍与田册，第一次意识到国家真正的骨架是这些无人爱看的纸。" },
+                { year: "建安九年（38岁）", text: "你主持清丈田亩与整顿仓储，得罪无数豪强，却让一州税粮稳定下来。" },
+                { year: "延康元年（53岁）", text: "新朝交替，你没有押错人，而是把一套能运转的制度交了出去。" },
+                { year: "景初元年（75岁）", text: "你在案牍边寿终，桌上还有一份没批完的边郡屯田册。" }
+            ],
+            [
+                { year: "中平六年（22岁）", text: "你靠家学入仕，却很快发现门第只能让你进门，不能让事情自己办成。" },
+                { year: "建安十二年（45岁）", text: "你在中央与地方之间反复调任，逐渐成为谁接手都舍不得换掉的老臣。" },
+                { year: "黄初五年（58岁）", text: "你主动让出一部分权力给年轻官员，躲开了改朝换代时最危险的清算。" },
+                { year: "景初元年（75岁）", text: "你寿终正寝，身后评价只有四字：事皆有序。" }
+            ],
+            [
+                { year: "初平二年（24岁）", text: "你从仓曹小吏做起，靠记性与耐心把一座快崩溃的县衙重新转起来。" },
+                { year: "建安十六年（46岁）", text: "你不站最显眼的位置，却总在最混乱的时候接手收拾残局。" },
+                { year: "太和二年（65岁）", text: "你请辞高位回乡，留下完整交接文书，继任者第一次没有骂前任。" },
+                { year: "景初元年（75岁）", text: "你在故里去世，门生遍布三州，没人记得你说过什么豪言。" }
+            ]
+        ],
+        "风骨文士": [
+            [
+                { year: "中平四年（18岁）", text: "你一篇讽时文章传遍洛阳，第一次体会文字也能让权贵睡不着。" },
+                { year: "建安五年（31岁）", text: "你替诸侯写檄文名震天下，却拒绝把笔永远借给某一家。" },
+                { year: "建安二十三年（49岁）", text: "你因直言触怒权势，被贬途中病逝，留下的文章反而传得更远。" }
+            ],
+            [
+                { year: "初平元年（20岁）", text: "你随难民南下，一路记录所见白骨与饥民，不写英雄，只写普通人。" },
+                { year: "建安十三年（39岁）", text: "你的诗文被两边军营同时传抄，谁都觉得你骂的是对方。" },
+                { year: "建安二十三年（49岁）", text: "你死于大疫。后来史家引用你的文字，只因它比战报更像那个时代。" }
+            ],
+            [
+                { year: "中平五年（17岁）", text: "你以才名入世，却很快厌倦宴席上的奉承，开始专门写别人不爱看的真话。" },
+                { year: "建安十七年（43岁）", text: "你主动离开幕府，在小城教书著述，避开最后一次政治风暴。" },
+                { year: "建安二十三年（49岁）", text: "病重时你仍在改稿，最后一句是：世道会变，字留下。" }
+            ]
+        ],
+        "绝代名医": [
+            [
+                { year: "光和七年（15岁）", text: "你从疫病死人堆里立志学医，先学的不是药方，而是煮水、通风与隔离。" },
+                { year: "建安三年（32岁）", text: "你在前线救治伤卒，不问旗号，因此同时被几方军队护送通行。" },
+                { year: "建安二十四年（53岁）", text: "你的外伤清创法传遍军中，许多原本必死的人因此活了下来。" },
+                { year: "正始二年（71岁）", text: "你在药庐寿终，留下数箱医案，比任何官印都更有用。" }
+            ],
+            [
+                { year: "中平二年（16岁）", text: "你跟随游医走村串户，见过太多穷人因付不起药钱死去。" },
+                { year: "建安九年（38岁）", text: "你拒绝长期留在权贵府中，转而建立巡诊队走遍几郡。" },
+                { year: "黄初三年（60岁）", text: "你把常用方剂整理成简明手册，故意写得连不识大字的乡医也看得懂。" },
+                { year: "正始二年（71岁）", text: "你去世后没有高官祭文，却有几百普通百姓自发送行。" }
+            ],
+            [
+                { year: "初平元年（18岁）", text: "你因一次误诊失去病人，从此每个方子都先问三遍自己有没有看错。" },
+                { year: "建安十二年（42岁）", text: "你被军阀强留府中，但以救治全城疫病为条件换得自由出诊。" },
+                { year: "黄初六年（65岁）", text: "你拒绝再碰权贵疑难杂症，只在乡间收徒传艺。" },
+                { year: "正始二年（71岁）", text: "最后一晚你让弟子收好药柜，然后像普通老人一样安静睡去。" }
+            ]
+        ],
+        "工造巧匠": [
+            [
+                { year: "初平二年（21岁）", text: "你从修水车起家，发现让机器多转一圈，比让百姓多出一分力更有意义。" },
+                { year: "建安十二年（37岁）", text: "你进入军器营，改良连弩与浮桥，一夜成了被各方争抢的人。" },
+                { year: "建兴五年（58岁）", text: "你把最得意的机关用在运输而不是杀人上，让山路粮运效率翻倍。" },
+                { year: "景耀元年（69岁）", text: "你在工坊寿终，徒弟们仍在争论你留下的一张齿轮图到底怎么装。" }
+            ],
+            [
+                { year: "中平六年（18岁）", text: "你被征去修城，却偷偷改良起重架，让原本十个人抬的石料只需四人。" },
+                { year: "建安九年（35岁）", text: "你因一台守城机被军阀软禁，从此所有发明都先画两份，一份交差，一份藏起来。" },
+                { year: "黄初三年（55岁）", text: "你借病退居地方，转而研究水利与农具，名声反而更大。" },
+                { year: "景耀元年（69岁）", text: "晚年你只说一句：最好用的机关，是让人少受一点苦。" }
+            ],
+            [
+                { year: "初平元年（20岁）", text: "你从铁匠学徒做起，靠重新设计箭簇与铠扣被军中看中。" },
+                { year: "建安十八年（45岁）", text: "你发现武器越好，死的人越多，于是把心思逐渐转向桥梁、车轮和水磨。" },
+                { year: "正始元年（65岁）", text: "你主持修成一座大桥，百姓第一次不知道你的名字却每天都在用你的东西。" },
+                { year: "景耀元年（69岁）", text: "你死后工具箱被徒弟分走，真正留下来的技术继续在民间活着。" }
+            ]
+        ],
+        "方外隐士": [
+            [
+                { year: "中平元年（23岁）", text: "你拒绝征辟，搬入南阳山中，先学会种菜，再学会不关心城头换谁的旗。" },
+                { year: "建安六年（40岁）", text: "数位诸侯先后来访，你只给判断，不给承诺，因此谁也无法真正把你拉进局。" },
+                { year: "黄初四年（62岁）", text: "中原稍定后你再次迁居更深山谷，只留下几卷批注给后学。" },
+                { year: "甘露三年（82岁）", text: "你在山居寿终。乱世最大的胜利，是它始终没能决定你怎么活。" }
+            ],
+            [
+                { year: "初平二年（25岁）", text: "你曾短暂出仕，三个月后看懂官场运转方式，随即辞官。" },
+                { year: "建安十三年（46岁）", text: "赤壁前夕你被请出山献策，只留一句天时不在北军，随后连夜离开。" },
+                { year: "太和元年（68岁）", text: "你在山中收了几个学生，却禁止他们称你老师。" },
+                { year: "甘露三年（82岁）", text: "你的墓没有碑，只有一株老松。后人甚至争论你究竟是否真实存在。" }
+            ],
+            [
+                { year: "中平六年（20岁）", text: "你随家人逃亡，途中发现自己最擅长的不是争，而是提前离开危险。" },
+                { year: "建安十年（44岁）", text: "你靠观天象、识山水成了当地人口中的奇人，诸侯来请也只给半句话。" },
+                { year: "正始元年（70岁）", text: "你把草庐交给学生，独自远游，再没有固定居所。" },
+                { year: "甘露三年（82岁）", text: "有人说你死在终南，有人说还在江边钓鱼。对你而言，两种说法都无所谓。" }
+            ]
+        ],
+        "纵横说客": [
+            [
+                { year: "兴平元年（21岁）", text: "你替两个互相准备开战的地方豪强谈成第一次停兵，发现嘴有时比刀快。" },
+                { year: "建安十三年（35岁）", text: "你在江东群臣之间连夜奔走，把原本摇摆的联盟硬生生谈成。" },
+                { year: "建安十九年（41岁）", text: "你单骑入城劝降，使一座城免于屠戮，名声达到顶峰。" },
+                { year: "黄初四年（59岁）", text: "你在出使途中病逝于舟上，最后还在和船夫争论一桩小事。" }
+            ],
+            [
+                { year: "初平三年（22岁）", text: "你最初只是替商队讲价，后来发现诸侯之间谈判与市集并无本质不同。" },
+                { year: "建安八年（34岁）", text: "你同时被两家阵营怀疑，却靠公开所有条件反而赢得短暂信任。" },
+                { year: "黄初元年（53岁）", text: "你主动退出最危险的斡旋，把经验写成一卷不署名的使者手册。" },
+                { year: "黄初四年（59岁）", text: "你去世后，旧敌与旧友居然同时派人吊唁。" }
+            ],
+            [
+                { year: "中平六年（19岁）", text: "你靠替流民与守城军官传话起家，第一次知道措辞能决定几百人能否进城。" },
+                { year: "建安十五年（42岁）", text: "你曾一次谈判失败，亲眼看见战争爆发，从此再也不把口才当表演。" },
+                { year: "黄初二年（57岁）", text: "你完成最后一次交换俘虏谈判后辞去使职，终于不必睡在敌营里。" },
+                { year: "黄初四年（59岁）", text: "两年后你病逝家中，最得意的不是说服过谁，而是有几场仗因此没打。" }
+            ]
+        ],
+        "坞堡豪强": [
+            [
+                { year: "中平五年（24岁）", text: "黄巾作乱，你聚宗族筑堡，把第一批粮食藏在三层不同地窖。" },
+                { year: "初平三年（31岁）", text: "溃兵围堡数月，你不开门决战，只靠箭楼、陷沟与库存耗走对方。" },
+                { year: "建安十二年（46岁）", text: "你接受朝廷招抚，以送一子入仕换来地方自治。" },
+                { year: "泰始二年（76岁）", text: "你看着四世同堂寿终，坞堡外的旗换了几轮，墙还在。" }
+            ],
+            [
+                { year: "初平元年（25岁）", text: "你先不筑高墙，而是把周边数村的粮仓、水井与报警烽火连成一体。" },
+                { year: "建安五年（39岁）", text: "大军借粮时你只给三成，同时送出详细道路情报，换来不被征收的承诺。" },
+                { year: "黄初元年（57岁）", text: "你逐渐把武装交给年轻人，自己专管分粮、婚盟与族产。" },
+                { year: "泰始二年（76岁）", text: "你在堡内寿终，后人评价你不是英雄，却让很多人有机会活到没有英雄的时代。" }
+            ],
+            [
+                { year: "中平六年（23岁）", text: "你带族人离开无险可守的故乡，迁到山口重新建寨。" },
+                { year: "建安九年（43岁）", text: "你在两大势力夹缝里反复谈判，始终不让任何一家驻军进堡。" },
+                { year: "太和三年（66岁）", text: "天下渐稳，你拆掉部分箭楼改建粮仓，第一次觉得高墙可能不再需要。" },
+                { year: "泰始二年（76岁）", text: "你死时堡门大开。对一个靠关门活下来的人，这就是最好的结局。" }
+            ]
+        ]
+    };
+
+    function getLifeVariants(role) {
+        const alternates = LIFE_ALT_ROUTES[role.name] || [];
+        return [role.chronicle, ...alternates].slice(0, 4);
+    }
+
+    const RANDOM_NAMES = ["子轩", "伯言", "文远", "景行", "玄策", "云舟", "怀瑾", "长风", "明川", "守拙"];
+
+    let currentQ = 0;
+    let selectedQuestions = [];
+    let userScores = {};
+    let answersHistory = [];
+    let pendingOption = null;
+    let answerLocked = false;
+    let lastResultSnapshot = null;
+
+    function randomizeName() {
+        const input = document.getElementById("userNameInput");
+        input.value = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+        input.focus();
+    }
+
+    function initProgressDots() {
+        const wrap = document.getElementById("progressDots");
+        wrap.innerHTML = "";
+        for (let i = 0; i < 10; i++) {
+            const dot = document.createElement("div");
+            dot.className = "progress-dot";
+            wrap.appendChild(dot);
+        }
+    }
+
+    function updateProgressDots() {
+        const dots = document.querySelectorAll(".progress-dot");
+        dots.forEach((dot, index) => {
+            dot.classList.toggle("done", index < currentQ);
+            dot.classList.toggle("active", index === currentQ);
+        });
+    }
+
+    function startQuiz() {
+        const nameVal = document.getElementById("userNameInput").value.trim();
+        if (!nameVal) {
+            alert("请先留下你的名字，再踏入乱世。");
+            return;
+        }
+
+        sessionStorage.removeItem("donghanResultSnapshot");
+        document.getElementById("displayUserName").innerText = nameVal;
+        DIMENSIONS.forEach(d => userScores[d.key] = 25);
+
+        selectedQuestions = [...QUESTION_BANK].sort(() => Math.random() - 0.5).slice(0, 10);
+        [...new Set(selectedQuestions.map(q => sceneForQuestion(q.q)))].forEach(src => { const img = new Image(); img.src = src; });
+        answersHistory = [];
+        currentQ = 0;
+        pendingOption = null;
+        initProgressDots();
+
+        document.getElementById("startView").classList.remove("active");
+        document.getElementById("resultView").classList.remove("active");
+        document.getElementById("quizView").classList.add("active");
+        document.getElementById("progressBox").style.display = "block";
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderQuestion() {
+        const qData = selectedQuestions[currentQ];
+        if (!qData) return;
+
+        document.getElementById("qIndexText").innerText = `第 ${currentQ + 1} / 10 题`;
+        document.getElementById("headerOmen").innerText = OMENS[Math.floor(Math.random() * OMENS.length)];
+        document.getElementById("questionTitle").innerText = qData.q;
+        updateProgressDots();
+        const eventImage = document.getElementById("eventImage");
+        eventImage.style.opacity = ".35";
+        const sceneSrc = sceneForQuestion(qData.q);
+        const sceneLoader = new Image();
+        sceneLoader.onload = () => {
+            eventImage.style.backgroundImage = `url("${sceneSrc}")`;
+            requestAnimationFrame(() => eventImage.style.opacity = "1");
+        };
+        sceneLoader.src = sceneSrc;
+
+        const optList = document.getElementById("optionsList");
+        optList.innerHTML = "";
+        const letters = ["A", "B", "C", "D"];
+
+        qData.options.forEach((opt, index) => {
+            const btn = document.createElement("div");
+            btn.className = "option-item";
+            btn.dataset.letter = letters[index];
+            btn.innerHTML = `<div class="option-text">${opt.text}</div>`;
+            btn.onclick = () => chooseOption(index, opt, btn);
+            optList.appendChild(btn);
+        });
+
+        pendingOption = null;
+        answerLocked = false;
+        document.getElementById("prevBtn").disabled = currentQ === 0;
+    }
+
+    function chooseOption(index, opt, el) {
+        if (answerLocked) return;
+        answerLocked = true;
+        document.querySelectorAll(".option-item").forEach(node => {
+            node.classList.remove("selected");
+            node.classList.add("is-locking");
+        });
+        el.classList.add("selected");
+        pendingOption = { index, opt };
+
+        setTimeout(() => {
+            if (opt.tag && userScores[opt.tag] !== undefined) userScores[opt.tag] += 26;
+            answersHistory[currentQ] = pendingOption;
+            currentQ++;
+            if (currentQ < selectedQuestions.length) {
+                renderQuestion();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                showFinalResult();
+            }
+        }, 360);
+    }
+
+    function previousQuestion() {
+        if (currentQ <= 0) return;
+        currentQ--;
+        const previous = answersHistory[currentQ];
+        if (previous && previous.opt && previous.opt.tag && userScores[previous.opt.tag] !== undefined) {
+            userScores[previous.opt.tag] -= 26;
+        }
+        answersHistory.splice(currentQ, 1);
+        pendingOption = null;
+        answerLocked = false;
+        renderQuestion();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function calculateFinalScores() {
+        const scoreVals = Object.values(userScores);
+        const maxVal = Math.max(...scoreVals);
+        const minVal = Math.min(...scoreVals);
+        const valRange = (maxVal - minVal) || 1;
+        const finalScores = {};
+
+        DIMENSIONS.forEach(d => {
+            const raw = userScores[d.key];
+            let scaled = Math.round(38 + ((raw - minVal) / valRange) * 58);
+            scaled += Math.floor(Math.random() * 3);
+            finalScores[d.key] = Math.min(scaled, 98);
+        });
+        return finalScores;
+    }
+
+    function chooseBestRole(finalScores) {
+        const sortedDims = [...DIMENSIONS].sort((a, b) => finalScores[b.key] - finalScores[a.key]);
+        const topDim1 = sortedDims[0].key;
+        const topDim2 = sortedDims[1].key;
+        let bestRole = null;
+
+        // 12 个主职业 + 2 个低概率隐藏命格。
+        // 隐藏命格依据原始选择分布触发，避免归一化后“最高分永远接近 96”导致永不出现。
+        const choiceCounts = {};
+        DIMENSIONS.forEach(d => {
+            choiceCounts[d.key] = Math.max(0, Math.round((userScores[d.key] - 25) / 26));
+        });
+        const countValues = Object.values(choiceCounts);
+        const maxChoiceCount = Math.max(...countValues);
+        const activeDims = countValues.filter(v => v > 0).length;
+        const isDiffuseSurvivor = maxChoiceCount <= 2 && activeDims >= 6;
+        const isHardLaborPath = choiceCounts.duty >= 4 && choiceCounts.business >= 2
+            && choiceCounts.decide === 0 && choiceCounts.innovate === 0;
+
+        if (isHardLaborPath) {
+            bestRole = ROLES_DATABASE.find(r => r.name === "屯田佃农");
+        } else if (isDiffuseSurvivor) {
+            bestRole = (choiceCounts.duty + choiceCounts.business >= choiceCounts.indep + choiceCounts.empathy)
+                ? ROLES_DATABASE.find(r => r.name === "屯田佃农")
+                : ROLES_DATABASE.find(r => r.name === "乱世流民");
+        } else {
+            let bestMatchScore = -9999;
+            const candidateRoles = ROLES_DATABASE.filter(r => r.name !== "乱世流民" && r.name !== "屯田佃农");
+            const shuffled = [...candidateRoles].sort(() => Math.random() - 0.5);
+
+            shuffled.forEach(role => {
+                const dimA = role.keyDims[0];
+                const dimB = role.keyDims[1];
+                let score = (finalScores[dimA] * 1.3) + (finalScores[dimB] * 1.0);
+                if (dimA === topDim1 || dimB === topDim1) score += 40;
+                if (dimA === topDim2 || dimB === topDim2) score += 25;
+                score += Math.random() * 2;
+                if (score > bestMatchScore) {
+                    bestMatchScore = score;
+                    bestRole = role;
+                }
+            });
+        }
+        return bestRole;
+    }
+
+
+    function showFinalResult() {
+        const finalScores = calculateFinalScores();
+        const bestRole = chooseBestRole(finalScores);
+        const variants = getLifeVariants(bestRole);
+        const chronicleIndex = Math.floor(Math.random() * variants.length);
+        const snapshot = {
+            userName: document.getElementById("userNameInput").value.trim(),
+            roleName: bestRole.name,
+            finalScores,
+            chronicleIndex
+        };
+        sessionStorage.setItem("donghanResultSnapshot", JSON.stringify(snapshot));
+        renderResultSnapshot(snapshot);
+    }
+
+    function renderResultSnapshot(snapshot) {
+        const bestRole = ROLES_DATABASE.find(r => r.name === snapshot.roleName);
+        if (!bestRole) return;
+
+        lastResultSnapshot = snapshot;
+        const finalScores = snapshot.finalScores;
+        const variants = getLifeVariants(bestRole);
+        const selectedChronicle = variants[snapshot.chronicleIndex] || variants[0] || bestRole.chronicle;
+
+        document.getElementById("startView").classList.remove("active");
+        document.getElementById("quizView").classList.remove("active");
+        document.getElementById("progressBox").style.display = "none";
+        document.getElementById("resultView").classList.add("active");
+        document.getElementById("headerOmen").innerText = "乱世已定 · 命书展开";
+
+        document.getElementById("displayUserName").innerText = snapshot.userName || "无名";
+        document.getElementById("resIdentityTitle").innerText = bestRole.name;
+        document.getElementById("resRoleChip").innerText = ROLE_TAGLINES[bestRole.name] || "乱世命格 · 自有答案";
+        document.getElementById("resHeroDesc").innerText = bestRole.desc;
+        document.getElementById("resPoem").innerText = `“${bestRole.poem}”`;
+        document.getElementById("resRating").innerText = bestRole.rating;
+        document.getElementById("resAge").innerText = bestRole.age;
+        document.getElementById("resFaction").innerText = bestRole.faction;
+        document.getElementById("resDanger").innerText = bestRole.danger;
+        document.getElementById("resDesc").innerText = bestRole.desc;
+        document.getElementById("resWeapon").innerText = bestRole.weapon;
+        document.getElementById("resModernSkill").innerText = bestRole.modernSkill;
+        document.getElementById("resDeathWarning").innerText = bestRole.deathWarning;
+
+        const visual = ROLE_VISUALS[bestRole.name] || ROLE_VISUALS["乱世枭雄"];
+        const scene = document.querySelector(".result-scene");
+        scene.style.setProperty("--result-bg", `url("${visual.image}")`);
+        scene.style.setProperty("--result-pos", visual.pos || "center 45%");
+
+        const sortedDims = [...DIMENSIONS].sort((a, b) => finalScores[b.key] - finalScores[a.key]).slice(0, 4);
+        const abilityGrid = document.getElementById("abilityGrid");
+        abilityGrid.innerHTML = "";
+        sortedDims.forEach(dim => {
+            const item = document.createElement("div");
+            item.className = "ability-card";
+            item.innerHTML = `<span class="label">${dim.label}</span><span class="score">${finalScores[dim.key]}</span>`;
+            abilityGrid.appendChild(item);
+        });
+
+        const timelineEl = document.getElementById("chronicleTimeline");
+        timelineEl.innerHTML = "";
+        selectedChronicle.forEach(item => {
+            const node = document.createElement("div");
+            node.className = "chronicle-node";
+            node.innerHTML = `
+                <div class="chronicle-dot"></div>
+                <div class="chronicle-year">${item.year}</div>
+                <div class="chronicle-text">${item.text}</div>
+            `;
+            timelineEl.appendChild(node);
+        });
+
+        const commentBox = document.getElementById("resComments");
+        commentBox.innerHTML = "";
+        bestRole.comments.forEach(c => {
+            const div = document.createElement("div");
+            div.className = "comment-node";
+            div.innerHTML = `<strong>【${c.name}】</strong>：${c.text}`;
+            commentBox.appendChild(div);
+        });
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function captureElement(element, filename, button, busyText, doneText, resetText) {
+        if (!window.html2canvas) {
+            alert("保存组件尚未载入，请稍后重试或直接截屏保存。");
+            return;
+        }
+        const original = button.innerText;
+        button.innerText = busyText;
+        button.disabled = true;
+
+        html2canvas(element, {
+            scale: 2,
+            backgroundColor: "#07090c",
+            useCORS: true,
+            logging: false
+        }).then(canvas => {
+            const link = document.createElement("a");
+            link.download = filename;
+            link.href = canvas.toDataURL("image/jpeg", 0.92);
+            link.click();
+            button.innerText = doneText;
+            setTimeout(() => {
+                button.innerText = resetText || original;
+                button.disabled = false;
+            }, 1800);
+        }).catch(() => {
+            alert("图片生成受阻，请直接使用手机截屏保存。");
+            button.innerText = original;
+            button.disabled = false;
+        });
+    }
+
+    function saveResultCard(button) {
+        const name = document.getElementById("displayUserName").innerText;
+        captureElement(
+            document.getElementById("resultHeroCard"),
+            `东汉命格卡-${name}.jpg`,
+            button,
+            "正在生成命格卡...",
+            "命格卡已保存",
+            "保存结果卡 ↓"
+        );
+    }
+
+    function saveFullBook(button) {
+        const name = document.getElementById("displayUserName").innerText;
+        captureElement(
+            document.getElementById("captureCard"),
+            `东汉完整命书-${name}.jpg`,
+            button,
+            "正在生成完整命书...",
+            "完整命书已保存",
+            "保存完整命书"
+        );
+    }
+
+    function restartQuiz() {
+        sessionStorage.removeItem("donghanResultSnapshot");
+        lastResultSnapshot = null;
+        document.getElementById("resultView").classList.remove("active");
+        document.getElementById("quizView").classList.remove("active");
+        document.getElementById("progressBox").style.display = "none";
+        document.getElementById("startView").classList.add("active");
+        document.getElementById("headerOmen").innerText = "乱世之中 · 见真我";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        initProgressDots();
+        ["./assets/start.jpg", "./assets/event-war.jpg"].forEach(src => { const img = new Image(); img.src = src; });
+        const saved = sessionStorage.getItem("donghanResultSnapshot");
+        if (saved) {
+            try {
+                const snapshot = JSON.parse(saved);
+                if (snapshot && snapshot.roleName && snapshot.finalScores) {
+                    document.getElementById("userNameInput").value = snapshot.userName || "";
+                    renderResultSnapshot(snapshot);
+                }
+            } catch (e) {
+                sessionStorage.removeItem("donghanResultSnapshot");
+            }
+        }
+    });
+</script>
+
+</body>
+</html>
